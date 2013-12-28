@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Consulter le profil de <%= userId %></title>
+		<link rel='stylesheet' type='text/css' href='/style.css' />
+	</head>
+	<body>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Mes informations
+			</div>
+			<div class='info'>
+				<%= userId %>
+			</div>
+			<div class='info'>
+				<%= age %>
+			</div>
+			<div class='info'>
+				<%= gender %>
+			</div>
+			<div class='info'>
+				<%= studies %>
+			</div>
+			<div class='info'>
+				<%= hierarchyLevel %>
+			</div>
+			<div class='info'>
+				<%= activity %>
+			</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Derni&egrave;res histoires consult&eacute;es
+			</div>
+			<div class='story'>Histoire 1</div>
+			<div class='story'>Histoire 2</div>
+			<div class='story'>Histoire 3</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Derni&egrave;res r&eacute;actions &agrave; mes commentaires
+			</div>
+			<div class='story'>Histoire 1</div>
+			<div class='comment'>
+				<div class='commentMeta'>Moi&nbsp;</div>
+				Cette attitude va &agrave; l'encontre m&ecirc;me du principe d'organisation.
+			</div>
+			<div class='comment' style='margin-left:20px'>
+				<div class='commentMeta'>Catherine&nbsp;</div>
+				Il vaut mieux juste aider les autres &agrave; faire leur travail
+			</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Mes histoires
+			</div>
+			<div class='story'>Histoire 1</div>
+			<div class='story'>Histoire 2</div>
+			<div class='story'>Histoire 3</div>
+		</div>
+	</body>
+</html>

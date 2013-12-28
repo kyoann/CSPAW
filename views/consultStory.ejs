@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Consulter une histoire</title>
+		<link rel='stylesheet' type='text/css' href='/style.css' />
+		<script src="/jquery-1.10.2.js"></script>
+		<script type='text/javascript'>
+			function newComment(commentId) {
+				if(commentId == undefined) {
+					$("#newRootCommentDiv").css('display','block');
+				}
+				else {
+					$("#inputCommentDiv"+commentId).css('display','block');
+				}
+			}
+			function validateComment(commentId) {
+				if(commentId == undefined) {
+					var text = $("#inputCommentText").val();
+				}
+				else {
+					var text = $("#inputCommentText"+commentId).val();
+					$("#commentId").val(commentId);
+				}
+				$("#commentText").val(text);
+				$("#commentForm").submit();
+			}
+		       	<%
+				if(canBeValidated == true) {
+			%>
+				function swithTheme(theme) {
+					if(theme.className == 'theme')
+					{
+						theme.className='theme selected';
+					}
+					else {
+						theme.className='theme';
+					}
+				}
+			<%	}
+			%>
+		</script>
+		</head>
+
+		<body>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Connexion
+			</div>
+			<div class='connexion'>
+				Isabelle
+			</div>
+		</div>
+		<div class='story structureElement'>
+			<div class='structureName'>Histoire</div>
+			<% if(canBeValidated == true) {%>
+
+			<form id='validationForm' method='PUT' action='/stories/validate' enctype='application/x-www-form-urlencoded'>
+				<input type='hidden' value='put' name='_method'/>
+				<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
+				<input type='text' id='storyTitle' name='storyTitle'>
+				<%= title %>
+				</input>
+			</form>
+			<% } else { %>
+			<div class='storyTitle structureElement'>
+				<div class='structureName'>Titre</div>
+				<%= title %>
+			</div>
+			<% } %>
+			<div class='storyFacts structureElement'>
+				<div class='structureName'>Faits</div><%= facts %></div>
+			<div class='storyFeelings structureElement'><div class='structureName'>Ressenti</div><%= feelings %></div>
+			<div class='storyProblem structureElement'><div class='structureName'>Probl&egrave;me</div><%= problem %></div>
+			<div id='themes' class='structureElement'>
+				<div class='structureName'>
+					Th&egrave;mes abord&eacute;s
+				</div>
+
+			<%
+				var onclick='';
+		       		if(canBeValidated == true) {
+					onclick ='onclick=\'switchTheme(this)\'';
+				}
+			%>
+			<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
+				<div class='theme selected' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
+				<div class='theme' <%=onclick%>>Probl&egrave;me avec un subalterne</div>
+				<div class='theme' <%=onclick%>>R&eacute;mun&eacute;ration</div>
+				<div class='theme' <%=onclick%>>Cong&eacute;s</div>
+				<div class='theme' <%=onclick%>>Amour / Sexe</div>
+				<div class='theme selected' <%=onclick%>>Management</div>
+				<div class='theme selected' <%=onclick%>>Nouveau poste</div>
+				<div class='theme' <%=onclick%>>Licenciement / reclassement</div>
+				<div class='theme selected' <%=onclick%>>Ambiance</div>
+			</div>
+		</div>
+		<% if(canBeValidated == true) {%>
+		<div class='button' onclick='$("#validationForm").submit()'>
+			Valider
+		</div>
+		<% } %>
+		<div class='specialistOpinionDiv structureElement'>
+			<div class='structureName'>Opinions des sp&eacute;cialistes</div>
+			<div class='specialistOpinionTitle'>L'avis du coach</div>
+			<div class='specialistOpinion'>Risquer la confiance est indispensable. Votre sur-investissement est peut-&ecirc;tre symptomatique d'un manque.</div>
+			<button>Ajouter un avis</button>
+		</div>
+		<div class='comments structureElement'>
+			<div class='structureName'>Commentaires</div>
+			<% 
+			var stack = [];       
+			comments.reverse().forEach( function(element,index,array) {
+			element.level = 0;
+			stack.push(element);
+			});
+			while(true) {
+			var currentComment = stack.pop();
+			if(currentComment == undefined) {
+			break;	
+			};
+			%>
+			<div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
+				<div class='commentMeta'><%= currentComment.author %></div>
+				<%= currentComment.text %>
+				<button onclick='newComment(<%= currentComment.id %>)'>+</button>
+				<div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
+					<textarea id='inputCommentText<%= currentComment.id %>'></textarea>
+					<button onclick='validateComment(<%= currentComment.id %>)'>&rarr;</button>
+				</div>
+			</div>
+			<% 
+			currentComment.comments.reverse().forEach( function(element,index,array) {
+			element.level = currentComment.level + 1;
+			stack.push(element);});
+			}
+			%>
+			<div>
+				<div>Proposer un commentaire
+					<button onclick='newComment(undefined)'>&rarr;</button>
+				</div>
+				<div id='newRootCommentDiv' style='display:none'>
+					<textarea id='inputCommentText'></textarea>
+					<button onclick='validateComment()'>&rarr;</button>
+				</div>
+			</div>
+		</div>
+		<form id='commentForm' method='POST' action='/stories/update' enctype='application/x-www-form-urlencoded'>
+			<input type='hidden' value='put' name='_method'/>
+			<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
+			<input type='hidden' id='commentId' name='commentId'/>
+			<input type='hidden' id='commentText' name='commentText'/>
+		</form>
+	</div>
+	</body>
+	</html>

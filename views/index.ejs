@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title><%= title %></title>
+		<link rel='stylesheet' type='text/css' href='/style.css'/>
+	</head>
+
+	<body>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Connexion
+			</div>
+			<div class='connexion'>
+				<form style='display:inline;'>
+					<input type='text' id='name' />
+					<input type='password' id='password' />
+					<a href='consultProfil.htm'>Se connecter</button>
+				</form>
+				<a href='createProfil.htm'>Cr&eacute;er un profil</a>
+			</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Accueil
+			</div>
+			<div id='intro'>Ce site a pour objectif de vous permettre de partager des probl&egrave;mes humains dans le cadre d'une activit&eacute; professionnelle et de b&eacute;n&eacute;ficier d'un soutien moral et de clefs de compr&eacute;hension.</div>
+			<div id='actions'>
+				<a href='searchStory.htm'>Rechercher une histoire</a>
+				<a href='/stories/new'>Raconter une histoire</a>
+				<a href='/stories/moderate'>Modérer les histores</a>
+			</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Actualit&eacute;s
+			</div>
+			<div id='events'>
+				Histoires r&eacute;cemment ajout&eacute;e :<br/>
+				<div class='story'>Histoire 1</div>
+				<div class='story'>Histoire 2</div>
+				<div class='story'>Histoire 3</div>
+			</div>
+		</div>
+	</body>
+
+</html>
