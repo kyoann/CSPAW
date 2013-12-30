@@ -95,7 +95,6 @@ exports.validateStory = function(req,res) {
 	var story = model.validateStory(storyId,storyTitle);	
 	console.log(story);
 	var storyModel =storyModel2storyView(story);
-	//HERE : page do not render if false
 	storyModel.canBeValidated = false;
 	res.render('consultStory',
 		   storyModel, function(err,stuff) {

@@ -104,10 +104,15 @@
 			<div class='structureName'>Commentaires</div>
 			<% 
 			var stack = [];       
-			comments.forEach( function(element,index,array) {
-			element.level = 0;
-			stack.push(element);
-			});
+
+			var treeIterator = function(aStack,aComments) {
+			for(var i = 0 ; i < aComments.length ; i++) {
+				aStack.push(aComments[i]);
+					treeIterator(aStack,aComments[i].comments);		
+			}
+			};
+			treeIterator(stack,comments);
+			stack.reverse();
 			while(true) {
 			var currentComment = stack.pop();
 			if(currentComment == undefined) {
@@ -124,11 +129,7 @@
 				</div>
 			</div>
 			<% 
-			currentComment.comments.forEach( function(element,index,array) {
-			element.level = currentComment.level + 1;
-			stack.push(element);});
 			}
-			stack.reverse();
 			%>
 			<div>
 				<div>Proposer un commentaire
