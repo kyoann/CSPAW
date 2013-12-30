@@ -1,4 +1,4 @@
-exports.story = function (id,title,facts,feelings,problem,author) {
+exports.story = function (id,title,facts,feelings,problem,userId,date) {
 	this.id = id,
 	this.version = 0,
 	this.title = title,
@@ -7,8 +7,8 @@ exports.story = function (id,title,facts,feelings,problem,author) {
 	this.problem = problem,
 	this.comments = [], 
 	this.state = 'new',
-	this.author = author,
-	this.creationDate = new Date(),
+	this.userId = userId,
+	this.creationDate = date,
 	this.commentsToValidate = 0
 }
 

@@ -1,5 +1,4 @@
 var express = require('express'),
-    map = require('./maproutecontroller'),
     http = require('http'),
     app = express();
 
@@ -30,9 +29,9 @@ app.configure(function() {
     var storiesController = require('./controllers/stories');
     app.get('/stories/new', storiesController.new);
     app.post('/stories/create', storiesController.create);
-    app.put('/stories/update', storiesController.update);
+    app.put('/stories/addComment', storiesController.addComment);
     app.get('/stories/moderate', storiesController.getStoriesToModerate);
-    app.put('/stories/moderate', storiesController.validateStory);
+    app.put('/stories/validate', storiesController.validateStory);
     app.get('/stories/consult', storiesController.consult);
 
     var usersController = require('./controllers/users');

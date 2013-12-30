@@ -42,3 +42,18 @@ div {
 	text-align: right;
 //	background-color:#BBBBBB;
 }
+.button {
+	margin: 10px;
+}
+.buttonText {
+	border: 1px solid black;
+	cursor: pointer;
+}
+.theme {
+	font-style: italic;
+	color: #333333;
+	display: inline;
+}
+.selected {
+	color: #00DD22;
+}

@@ -28,7 +28,7 @@
 		       	<%
 				if(canBeValidated == true) {
 			%>
-				function swithTheme(theme) {
+				function switchTheme(theme) {
 					if(theme.className == 'theme')
 					{
 						theme.className='theme selected';
@@ -43,24 +43,14 @@
 		</head>
 
 		<body>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Connexion
-			</div>
-			<div class='connexion'>
-				Isabelle
-			</div>
-		</div>
 		<div class='story structureElement'>
 			<div class='structureName'>Histoire</div>
 			<% if(canBeValidated == true) {%>
 
-			<form id='validationForm' method='PUT' action='/stories/validate' enctype='application/x-www-form-urlencoded'>
+			<form id='validationForm' method='POST' action='/stories/validate' enctype='application/x-www-form-urlencoded'>
 				<input type='hidden' value='put' name='_method'/>
 				<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
-				<input type='text' id='storyTitle' name='storyTitle'>
-				<%= title %>
-				</input>
+				<input type='text' id='storyTitle' name='storyTitle' value='<%= title %>'/>
 			</form>
 			<% } else { %>
 			<div class='storyTitle structureElement'>
@@ -69,7 +59,8 @@
 			</div>
 			<% } %>
 			<div class='storyFacts structureElement'>
-				<div class='structureName'>Faits</div><%= facts %></div>
+				<div class='structureName'>Faits</div><%= facts %>
+			</div>
 			<div class='storyFeelings structureElement'><div class='structureName'>Ressenti</div><%= feelings %></div>
 			<div class='storyProblem structureElement'><div class='structureName'>Probl&egrave;me</div><%= problem %></div>
 			<div id='themes' class='structureElement'>
@@ -80,7 +71,7 @@
 			<%
 				var onclick='';
 		       		if(canBeValidated == true) {
-					onclick ='onclick=\'switchTheme(this)\'';
+					onclick ='onclick=switchTheme(this) style="cursor:pointer;"';
 				}
 			%>
 			<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
@@ -96,9 +87,12 @@
 			</div>
 		</div>
 		<% if(canBeValidated == true) {%>
-		<div class='button' onclick='$("#validationForm").submit()'>
-			Valider
-		</div>
+		<!--	<div class='button'>
+			<span class='buttonText' onclick='$("#validationForm").submit()'>
+				Valider
+			</span>
+		</div>-->
+		<input type='button' value='Valider' onclick='$("#validationForm").submit()'/>
 		<% } %>
 		<div class='specialistOpinionDiv structureElement'>
 			<div class='structureName'>Opinions des sp&eacute;cialistes</div>
@@ -110,7 +104,7 @@
 			<div class='structureName'>Commentaires</div>
 			<% 
 			var stack = [];       
-			comments.reverse().forEach( function(element,index,array) {
+			comments.forEach( function(element,index,array) {
 			element.level = 0;
 			stack.push(element);
 			});
@@ -130,10 +124,11 @@
 				</div>
 			</div>
 			<% 
-			currentComment.comments.reverse().forEach( function(element,index,array) {
+			currentComment.comments.forEach( function(element,index,array) {
 			element.level = currentComment.level + 1;
 			stack.push(element);});
 			}
+			stack.reverse();
 			%>
 			<div>
 				<div>Proposer un commentaire
@@ -145,7 +140,7 @@
 				</div>
 			</div>
 		</div>
-		<form id='commentForm' method='POST' action='/stories/update' enctype='application/x-www-form-urlencoded'>
+		<form id='commentForm' method='POST' action='/stories/addComment' enctype='application/x-www-form-urlencoded'>
 			<input type='hidden' value='put' name='_method'/>
 			<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
 			<input type='hidden' id='commentId' name='commentId'/>
