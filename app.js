@@ -30,9 +30,9 @@ app.configure(function() {
     app.get('/stories/new', storiesController.new);
     app.post('/stories/create', storiesController.create);
     app.put('/stories/addComment', storiesController.addComment);
-    app.get('/stories/moderate', storiesController.getStoriesToModerate);
+    app.get('/stories/moderate', storiesController.moderate);
     app.put('/stories/validate', storiesController.validateStory);
-    app.get('/stories/consult', storiesController.consult);
+    app.get('/stories/consult/:storyId', storiesController.consult);
 
     var usersController = require('./controllers/users');
     app.get('/users/new', usersController.new);

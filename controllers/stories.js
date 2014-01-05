@@ -1,17 +1,19 @@
 var model = require('../models/stories');
 
 exports.consult = function(req,res) {
-	var story = model.getStory(req.body.storyId);
+	var story = model.getStory(req.params.storyId);
 	
+	var storyView = storyModel2storyView(story);
+
 	//TODO
 	storyView.canBeValidated = false;
 	if(story.state == 'new') {
 		storyView.canBeValidated = true;
 	}
+
 	res.render('consultStory',
-		   storyModel2storyView(story), function(err,stuff) {
+		   storyView, function(err,stuff) {
 			   if(!err) {
-				   console.log(stuff);
 				   res.write(stuff);
 				   res.end();
 			   }
@@ -20,7 +22,6 @@ exports.consult = function(req,res) {
 exports.new = function(req,res) {
 	res.render('createStory', function(err,stuff) {
 		if(!err) {
-			console.log(stuff);
 			res.write(stuff);
 			res.end();
 		}
@@ -46,7 +47,6 @@ exports.create = function(req,res) {
 	res.render('consultStory',
 		   storyView, function(err,stuff) {
 			   if(!err) {
-				   console.log(stuff);
 				   res.write(stuff);
 				   res.end();
 			   }
@@ -65,23 +65,26 @@ exports.addComment = function(req,res) {
 	console.log(storyView);
 
 	storyView.canBeValidated = false;
+
 	res.render('consultStory',
 		   storyView, function(err,stuff) {
 			   if(!err) {
-				   console.log(stuff);
 				   res.write(stuff);
 				   res.end();
 			   }
 		   });
+		  
+	//res.redirect('/stories/consult');
 };
 
-exports.getStoriesToModerate = function(req,res) {
+exports.moderate = function(req,res) {
 	var newStories = model.getNewStories();
 	var storiesWithCommentsToValidate = model.getStoriesWithCommentsToValidate();
+	//TODO
+	var storiesWithSpecialistOpinionToValidate = [];
 	res.render('moderate',
-		   {stories : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate}, function(err,stuff) {
+		   {storiesToValidate : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate, storiesWithSpecialistOpinionToValidate: storiesWithSpecialistOpinionToValidate}, function(err,stuff) {
 			   if(!err) {
-				   console.log(stuff);
 				   res.write(stuff);
 				   res.end();
 			   }
@@ -99,7 +102,6 @@ exports.validateStory = function(req,res) {
 	res.render('consultStory',
 		   storyModel, function(err,stuff) {
 			   if(!err) {
-				   console.log(stuff);
 				   res.write(stuff);
 				   res.end();
 			   }

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<title>Trouver une histoire</title>
-		<link rel='stylesheet' type='text/css' href='style.css'/>
+		<link rel='stylesheet' type='text/css' href='../public/style.css'/>@
+		<script src="../public/jquery-1.10.2.js"/>
 		<script type='application/ecmascript'>
 			function showResults() {
 				document.getElementById('results').style.display='block';
@@ -21,6 +21,23 @@
                                     myGroup.setAttribute('transform','translate(200)');
                             }
                     }
+function switchColor(aColor,aNumber) {
+	if(aColor == "red") {
+		$("#red"+aNumber).css('background-color','red');	
+		$("#green"+aNumber).css('background-color','white');	
+		$("#blue"+aNumber).css('background-color','white');	
+	}
+	if(aColor == "green") {
+		$("#red"+aNumber).css('background-color','white');	
+		$("#green"+aNumber).css('background-color','green');	
+		$("#blue"+aNumber).css('background-color','white');	
+	}
+	if(aColor == "blue") {
+		$("#red"+aNumber).css('background-color','white');	
+		$("#green"+aNumber).css('background-color','white');	
+		$("#blue"+aNumber).css('background-color','blue');	
+	}
+}
 
             </script>
 	</head>
@@ -151,6 +168,12 @@
 						</div>
 					</div>
 				</div>
+				<div>
+					<div id='red1' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer' onclick='switchColor("red",1)'>&nbsp;</div>
+					<div id='green1' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer' onclick='switchColor("green",1)'>&nbsp;</div>
+					<div id='blue1' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer' onclick='switchColor("blue",1)'>&nbsp;</div>
+				</div>
+
 			</body>
 
 		</html>

@@ -51,8 +51,8 @@ exports.getNewStories = function() {
 	var newStories = [];
 
 	for(var i = 0 ; i < stories.length ; i++) {
-		if(story[i].state == 'new') {
-			newStories.push(story[i]);
+		if(stories[i].state == 'new') {
+			newStories.push(stories[i]);
 		}
 	}
 	return newStories;
@@ -61,8 +61,8 @@ exports.getStoriesWithCommentsToValidate = function() {
 	var storiesWithCommentsToValidate = [];
 
 	for(var i = 0 ; i < stories.length ; i++) {
-		if(story[i].commentsToValidate !== 0) {
-			storiesWithCommentsToValidate.push(story[i]);
+		if(stories[i].commentsToValidate !== 0) {
+			storiesWithCommentsToValidate.push(stories[i]);
 		}
 	}
 	return storiesWithCommentsToValidate;

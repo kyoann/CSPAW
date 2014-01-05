@@ -2,13 +2,13 @@
 <html>
 
 <head>
-<title>Valider des histoires</title>
+<title>Afficher la liste des histoires, des commentaires et des avis &agrave; mod&eacute;rer</title>
 <link rel='stylesheet' type='text/css' href='/style.css'/>
 <script src="/jquery-1.10.2.js"></script>
 <script type='text/javascript'>
 function consultStory(storyId) {
-	$("#storyId").value(storyId);
-	$("#consultStoryForm).submit();	
+	$("#storyId").val(storyId);
+	$("#consultStoryForm").submit();	
 }
 </script>
 </head>
@@ -19,23 +19,60 @@ function consultStory(storyId) {
 		Liste des histoires à valider
 	</div>
 	<div>
-		Histoires r&eacute;cemment ajout&eacute;e :<br/>
+		Histoires &agrave; valider :<br/>
 		<%
-		for(var i = 0 ; i < stories.length ; i++>)
-		{
+		for(var i = 0 ; i < storiesToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
-			<a href="javascript:consulStory(<%=stories[i].id=>)"><%= stories[i].title%></a>
+			<a href="/stories/consult/<%=storiesToValidate[i].id%>"><%= storiesToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor'><%= stories[i].author%></div>
-		<div class='storyDate'><%= stories[i].creationDate%></div>
+		<div class='storyAuthor'><%= storiesToValidate[i].author%></div>
+		<div class='storyDate'><%= storiesToValidate[i].creationDate%></div>
 		<%
 		}
 		%>
 	</div>
 </div>
-<form id='consultStoryForm' method='get' action='/stories/consult' enctype='application/x-www-form-urlencoded'>
-	<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
+<div class='structureElement'>
+	<div class='structureName'>
+		Liste des avis à valider
+	</div>
+	<div>
+		Avis &agrave; valider :<br/>
+		<%
+		for(var i = 0 ; i < storiesWithSpecialistOpinionToValidate.length ; i++) {
+		%>
+		<div class='storyTitle'>
+			<a href="/stories/consult/<%=storiesWithSpecialistOpinionToValidate[i].id%>"><%= storiesWithSpecialistOpinionToValidate[i].title%></a>
+		</div>
+		<div class='storyAuthor'><%= storiesWithSpecialistOpinionToValidate[i].author%></div>
+		<div class='storyDate'><%= storiesWithSpecialistOpinionToValidate[i].creationDate%></div>
+		<%
+		}
+		%>
+	</div>
+</div>
+<div class='structureElement'>
+	<div class='structureName'>
+		Liste des commentaires à valider
+	</div>
+	<div>
+		Avis &agrave; valider :<br/>
+		<%
+		for(var i = 0 ; i < storiesWithCommentsToValidate.length ; i++) {
+		%>
+		<div class='storyTitle'>
+			<a href="/stories/consult/<%=storiesWithCommentsToValidate[i].id%>"><%= storiesWithCommentsToValidate[i].title%></a>
+		</div>
+		<div class='storyAuthor'><%= storiesWithCommentsToValidate[i].author%></div>
+		<div class='storyDate'><%= storiesWithCommentsToValidate[i].creationDate%></div>
+		<%
+		}
+		%>
+	</div>
+</div>
+<form id='consultStoryForm' method='POST' action='/stories/consult' enctype='application/x-www-form-urlencoded'>
+	<input type='hidden' id='storyId' name='storyId' />
 </form>
 </body>
 </html>
