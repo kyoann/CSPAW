@@ -19,6 +19,7 @@ exports.comment = function(id,author,creationDate,text) {
 	this.text = text;
 	this.comments = [];
 	this.level = 0;
+	this.state = 'toBeValidated';
 }
 
 exports.user = function(id,password,age,hierarchyLevel,activity,gender,studies) {

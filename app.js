@@ -30,6 +30,7 @@ app.configure(function() {
     app.get('/stories/new', storiesController.new);
     app.post('/stories/create', storiesController.create);
     app.put('/stories/addComment', storiesController.addComment);
+    app.put('/stories/validateComments', storiesController.validateComments);
     app.get('/stories/moderate', storiesController.moderate);
     app.put('/stories/validate', storiesController.validateStory);
     app.get('/stories/consult/:storyId', storiesController.consult);

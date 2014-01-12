@@ -22,7 +22,7 @@ exports.addComment = function (userId,storyId,commentId,text) {
 		comment.level = 0;
 	}
 	else {
-		var baseComment = findComment(story.comments,commentId);
+		var baseComment = findComment(commentId,story.comments);
 		if(baseComment === undefined) {
 			//TODO throw exception
 		}
@@ -33,19 +33,21 @@ exports.addComment = function (userId,storyId,commentId,text) {
 	console.log(story);
 	return story;
 };
-function findComment(comments,commentId) {
-	for(var i = 0 ; i < comments.length ; i++) {
-		if(comments[i].id == commentId) {
-			return comments[i];
-		} else {
-			var comment = findComment(comments[i].comments,commentId);
-			if(comment !== undefined) {
+function findComment(aCommentId,aComments) {
+	for(var i = 0 ; i < aComments.length ; i++) {
+		console.log("comparing "+aComments[i].id+" with "+aCommentId);
+		if(aComments[i].id == aCommentId ) {
+			return aComments[i];
+		}	
+		else {
+			var comment = findComment(aCommentId,aComments[i].comments);
+			if(comment != undefined) {
 				return comment;
 			}
 		}
 	}
 	return undefined;
-}
+};
 
 exports.getNewStories = function() {
 	var newStories = [];
@@ -87,3 +89,63 @@ exports.validateStory = function(storyId,storyTitle) {
 	story.title = storyTitle;
 	return story;
 };
+
+exports.validateComments = function(storyId,commentsStates) {
+	var story = exports.getStory(storyId);
+	story.commentsToValidate = 0;
+	var f = function(aComment) {
+		console.log("visiting comment:"+aComment.id);
+		var state = commentsStates[aComment.id];
+		console.log("new comment state:"+state);
+		if(state == undefined){
+			return;
+		} 
+		else {
+			if(state=='red') {
+				aComment.state = 'refused';
+			}
+			if(state=='green') {
+				aComment.state = 'validated';
+			}
+			if(state=='blue') {
+				aComment.state = 'toBeValidated';
+			}
+		}
+		if(aComment.state == 'toBeValidated') {
+			story.commentsToValidate++;
+		}
+		console.log("commentsToValidate:"+story.commentsToValidate);
+	}
+	commentsIterator(story.comments,f);
+	/*
+	   for(var commentId in commentsStates) {
+	   console.log("looking for comment:"+storyId+"/"+commentId);
+	   var comment = findComment(commentId,story.comments);
+	   if(comment == undefined) {
+	   console.log("unfound comment:"+storyId+"/"+commentId);
+	   continue;
+	   }
+	   else {
+	   console.log("found");
+	   }
+	   if(commentsStates[commentId]=='red') {
+	   comment.state = 'refused';
+	   }
+	   if(commentsStates[commentId]=='green') {
+	   comment.state = 'validated';
+	   }
+	   if(commentsStates[commentId]=='blue') {
+	   comment.state = 'toBeValidated';
+	   }
+	   }
+	   return story;
+	   */
+	return story;	
+};
+
+function commentsIterator(aComments, aFunction) {
+	for(var i = 0 ; i < aComments.length ; i++) {
+		commentsIterator(aComments[i].comments, aFunction);
+		aFunction(aComments[i]);
+	}
+}

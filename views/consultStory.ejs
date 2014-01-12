@@ -14,7 +14,7 @@
 					$("#inputCommentDiv"+commentId).css('display','block');
 				}
 			}
-			function validateComment(commentId) {
+			function addComment(commentId) {
 				if(commentId == undefined) {
 					var text = $("#inputCommentText").val();
 				}
@@ -37,6 +37,33 @@
 						theme.className='theme';
 					}
 				}
+			var commentsStates = {};
+
+			function switchColor(aColor,aNumber) {
+					commentsStates[aNumber] = aColor;
+				if(aColor == "red") {
+					$("#red"+aNumber).css('background-color','red');	
+					$("#green"+aNumber).css('background-color','white');	
+					$("#blue"+aNumber).css('background-color','white');	
+				//	$("#commentState"+aNumber).val("red");
+				}
+				if(aColor == "green") {
+					$("#red"+aNumber).css('background-color','white');	
+					$("#green"+aNumber).css('background-color','green');	
+					$("#blue"+aNumber).css('background-color','white');	
+					//$("#commentState"+aNumber).val("green");
+				}
+				if(aColor == "blue") {
+					$("#red"+aNumber).css('background-color','white');	
+					$("#green"+aNumber).css('background-color','white');	
+					$("#blue"+aNumber).css('background-color','blue');	
+					//$("#commentState"+aNumber).val("blue");
+				}
+			}
+			function moderateComments() {
+				$("#commentsStates").val(JSON.stringify(commentsStates));
+				$("#commentsValidationForm").submit();
+			}
 			<%	}
 			%>
 		</script>
@@ -68,13 +95,13 @@
 					Th&egrave;mes abord&eacute;s
 				</div>
 
-			<%
+				<%
 				var onclick='';
-		       		if(canBeValidated == true) {
-					onclick ='onclick=switchTheme(this) style="cursor:pointer;"';
+				if(canBeValidated == true) {
+				onclick ='onclick=switchTheme(this) style="cursor:pointer;"';
 				}
-			%>
-			<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
+				%>
+				<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
 				<div class='theme selected' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
 				<div class='theme' <%=onclick%>>Probl&egrave;me avec un subalterne</div>
 				<div class='theme' <%=onclick%>>R&eacute;mun&eacute;ration</div>
@@ -87,11 +114,6 @@
 			</div>
 		</div>
 		<% if(canBeValidated == true) {%>
-		<!--	<div class='button'>
-			<span class='buttonText' onclick='$("#validationForm").submit()'>
-				Valider
-			</span>
-		</div>-->
 		<input type='button' value='Valider' onclick='$("#validationForm").submit()'/>
 		<% } %>
 		<div class='specialistOpinionDiv structureElement'>
@@ -107,8 +129,8 @@
 
 			var treeIterator = function(aStack,aComments) {
 			for(var i = 0 ; i < aComments.length ; i++) {
-				aStack.push(aComments[i]);
-					treeIterator(aStack,aComments[i].comments);		
+			aStack.push(aComments[i]);
+			treeIterator(aStack,aComments[i].comments);		
 			}
 			};
 			treeIterator(stack,comments);
@@ -122,10 +144,33 @@
 			<div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
 				<div class='commentMeta'><%= currentComment.author %></div>
 				<%= currentComment.text %>
-				<button onclick='newComment(<%= currentComment.id %>)'>+</button>
+				<button onclick='newComment(<%= currentComment.id %>)'>&rarr;</button>
 				<div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
 					<textarea id='inputCommentText<%= currentComment.id %>'></textarea>
-					<button onclick='validateComment(<%= currentComment.id %>)'>&rarr;</button>
+					<button onclick='addComment(<%= currentComment.id %>)'>&rarr;</button>
+				</div>
+				<div style='display:inline;float:right;'>
+					<%
+						var redBackground = '';
+						var greenBackground = '';
+						var blueBackground = '';
+						var commentState = '';
+						if(currentComment.state == 'refused') {
+							redBackground='background-color:red;';	
+							commentState = 'red';
+						}
+						if(currentComment.state == 'validated') {
+							greenBackground='background-color:green;';	
+							commentState = 'green';
+						}
+						if(currentComment.state == 'toBeValidated') {
+							blueBackground='background-color:blue;';	
+							commentState = 'blue';
+						}
+				       	%>
+					<div id='red<%= currentComment.id %>' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>&nbsp;</div>
+					<div id='green<%= currentComment.id %>' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>&nbsp;</div>
+					<div id='blue<%= currentComment.id %>' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>&nbsp;</div>
 				</div>
 			</div>
 			<% 
@@ -137,7 +182,12 @@
 				</div>
 				<div id='newRootCommentDiv' style='display:none'>
 					<textarea id='inputCommentText'></textarea>
-					<button onclick='validateComment()'>&rarr;</button>
+					<button onclick='addComment()'>&rarr;</button>
+				</div>
+			</div>
+			<div>
+				<div>Mod&eacute;rer les commentaires
+					<button onclick='moderateComments()'>&rarr;</button>
 				</div>
 			</div>
 		</div>
@@ -146,6 +196,11 @@
 			<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
 			<input type='hidden' id='commentId' name='commentId'/>
 			<input type='hidden' id='commentText' name='commentText'/>
+		</form>
+		<form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
+			<input type='hidden' value='put' name='_method'/>
+			<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
+			<input type='hidden' id='commentsStates' name='commentsStates' value=''/>
 		</form>
 	</div>
 	</body>

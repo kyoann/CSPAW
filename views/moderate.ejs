@@ -16,7 +16,7 @@ function consultStory(storyId) {
 <body>
 <div class='structureElement'>
 	<div class='structureName'>
-		Liste des histoires à valider
+		Liste des histoires &agrave; valider
 	</div>
 	<div>
 		Histoires &agrave; valider :<br/>
@@ -35,7 +35,7 @@ function consultStory(storyId) {
 </div>
 <div class='structureElement'>
 	<div class='structureName'>
-		Liste des avis à valider
+		Liste des avis &agrave; valider
 	</div>
 	<div>
 		Avis &agrave; valider :<br/>
@@ -54,10 +54,10 @@ function consultStory(storyId) {
 </div>
 <div class='structureElement'>
 	<div class='structureName'>
-		Liste des commentaires à valider
+		Liste des commentaires &agrave; valider
 	</div>
 	<div>
-		Avis &agrave; valider :<br/>
+		Commentaire &agrave; valider :<br/>
 		<%
 		for(var i = 0 ; i < storiesWithCommentsToValidate.length ; i++) {
 		%>
@@ -65,7 +65,7 @@ function consultStory(storyId) {
 			<a href="/stories/consult/<%=storiesWithCommentsToValidate[i].id%>"><%= storiesWithCommentsToValidate[i].title%></a>
 		</div>
 		<div class='storyAuthor'><%= storiesWithCommentsToValidate[i].author%></div>
-		<div class='storyDate'><%= storiesWithCommentsToValidate[i].creationDate%></div>
+		<div class='storyDate'><%= storiesWithCommentsToValidate[i].creationDate.toLocaleString()%></div>
 		<%
 		}
 		%>

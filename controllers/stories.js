@@ -64,7 +64,7 @@ exports.addComment = function(req,res) {
 	var storyView = storyModel2storyView(story);
 	console.log(storyView);
 
-	storyView.canBeValidated = false;
+	storyView.canBeValidated = true;
 
 	res.render('consultStory',
 		   storyView, function(err,stuff) {
@@ -107,7 +107,30 @@ exports.validateStory = function(req,res) {
 			   }
 		   });
 };
+exports.validateComments = function(req,res) {
+	var storyId = req.body.storyId;
+	var commentsStates = JSON.parse(req.body.commentsStates);
+	console.log(commentsStates);
+	var story = model.validateComments(storyId,commentsStates);
+	var storyModel =storyModel2storyView(story);
+	storyModel.canBeValidated = true;
+	res.render('consultStory',
+		   storyModel, function(err,stuff) {
+			   if(!err) {
+				   res.write(stuff);
+				   res.end();
+			   }
+		   });
+
+}
 
 function storyModel2storyView(aStory) {
-	return {storyId:aStory.id,title:aStory.title,facts:aStory.facts,feelings:aStory.feelings,problem:aStory.problem,comments:aStory.comments};
+	return {
+		storyId:aStory.id,
+		title:aStory.title,
+		facts:aStory.facts,
+		feelings:aStory.feelings,
+		problem:aStory.problem,
+		comments:aStory.comments,
+	};
 }
