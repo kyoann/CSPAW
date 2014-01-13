@@ -50,10 +50,14 @@ div {
 	cursor: pointer;
 }
 .theme {
+	font-weight: normal;
 	font-style: italic;
-	color: #333333;
+	color: #777777;
 	display: inline;
+	cursor: pointer;
 }
 .selected {
-	color: #00DD22;
+	font-weight: bold;
+	color: #000000;
+	font-style: normal;
 }

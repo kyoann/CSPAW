@@ -19,15 +19,14 @@ function consultStory(storyId) {
 		Liste des histoires &agrave; valider
 	</div>
 	<div>
-		Histoires &agrave; valider :<br/>
 		<%
 		for(var i = 0 ; i < storiesToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=storiesToValidate[i].id%>"><%= storiesToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor'><%= storiesToValidate[i].author%></div>
-		<div class='storyDate'><%= storiesToValidate[i].creationDate%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithCommentsToValidate[i].author%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithCommentsToValidate[i].creationDate)%></div>
 		<%
 		}
 		%>
@@ -38,15 +37,14 @@ function consultStory(storyId) {
 		Liste des avis &agrave; valider
 	</div>
 	<div>
-		Avis &agrave; valider :<br/>
 		<%
 		for(var i = 0 ; i < storiesWithSpecialistOpinionToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=storiesWithSpecialistOpinionToValidate[i].id%>"><%= storiesWithSpecialistOpinionToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor'><%= storiesWithSpecialistOpinionToValidate[i].author%></div>
-		<div class='storyDate'><%= storiesWithSpecialistOpinionToValidate[i].creationDate%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithCommentsToValidate[i].author%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithCommentsToValidate[i].creationDate)%></div>
 		<%
 		}
 		%>
@@ -57,15 +55,18 @@ function consultStory(storyId) {
 		Liste des commentaires &agrave; valider
 	</div>
 	<div>
-		Commentaire &agrave; valider :<br/>
 		<%
+		var formatDate = function(aDate) {
+			var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
+			return result;
+		};
 		for(var i = 0 ; i < storiesWithCommentsToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=storiesWithCommentsToValidate[i].id%>"><%= storiesWithCommentsToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor'><%= storiesWithCommentsToValidate[i].author%></div>
-		<div class='storyDate'><%= storiesWithCommentsToValidate[i].creationDate.toLocaleString()%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithCommentsToValidate[i].author%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithCommentsToValidate[i].creationDate)%></div>
 		<%
 		}
 		%>

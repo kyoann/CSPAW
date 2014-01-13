@@ -42,21 +42,40 @@
 			function switchColor(aColor,aNumber) {
 					commentsStates[aNumber] = aColor;
 				if(aColor == "red") {
-					$("#red"+aNumber).css('background-color','red');	
-					$("#green"+aNumber).css('background-color','white');	
-					$("#blue"+aNumber).css('background-color','white');	
+					$("#red"+aNumber).css('font-weight','bold');	
+					$("#red"+aNumber).css('font-style','');	
+					$("#red"+aNumber).css('color','#000000');	
+					$("#green"+aNumber).css('font-weight','');	
+					$("#green"+aNumber).css('font-style','');	
+					$("#green"+aNumber).css('font-style','italic');	
+					$("#green"+aNumber).css('color','#777777');	
+					$("#blue"+aNumber).css('font-weight','');	
+					$("#blue"+aNumber).css('font-style','italic');	
+					$("#blue"+aNumber).css('color','#777777');	
 				//	$("#commentState"+aNumber).val("red");
 				}
 				if(aColor == "green") {
-					$("#red"+aNumber).css('background-color','white');	
-					$("#green"+aNumber).css('background-color','green');	
-					$("#blue"+aNumber).css('background-color','white');	
+					$("#red"+aNumber).css('font-weight','');	
+					$("#red"+aNumber).css('font-style','italic');	
+					$("#red"+aNumber).css('color','#777777');	
+					$("#green"+aNumber).css('font-weight','bold');	
+					$("#green"+aNumber).css('font-style','');	
+					$("#green"+aNumber).css('color','#000000');	
+					$("#blue"+aNumber).css('font-weight','');	
+					$("#blue"+aNumber).css('font-style','italic');	
+					$("#blue"+aNumber).css('color','#777777');	
 					//$("#commentState"+aNumber).val("green");
 				}
 				if(aColor == "blue") {
-					$("#red"+aNumber).css('background-color','white');	
-					$("#green"+aNumber).css('background-color','white');	
-					$("#blue"+aNumber).css('background-color','blue');	
+					$("#red"+aNumber).css('font-weight','');	
+					$("#red"+aNumber).css('font-style','italic');	
+					$("#red"+aNumber).css('color','#777777');	
+					$("#green"+aNumber).css('font-weight','');	
+					$("#green"+aNumber).css('font-style','italic');	
+					$("#green"+aNumber).css('color','#777777');	
+					$("#blue"+aNumber).css('font-weight','bold');	
+					$("#blue"+aNumber).css('font-style','');	
+					$("#blue"+aNumber).css('color','#000000');	
 					//$("#commentState"+aNumber).val("blue");
 				}
 			}
@@ -154,23 +173,29 @@
 						var redBackground = '';
 						var greenBackground = '';
 						var blueBackground = '';
-						var commentState = '';
 						if(currentComment.state == 'refused') {
-							redBackground='background-color:red;';	
-							commentState = 'red';
+							//redBackground='background-color:red;';	
+							redBackground='font-weitght:bold;font-style:normal;color:#000000';	
+							greenBackground='font-weight:normal;font-style:italic;color:#777777';	
+							blueBackground='font-weight:normal;font-style:italic;color:#777777';	
 						}
 						if(currentComment.state == 'validated') {
-							greenBackground='background-color:green;';	
-							commentState = 'green';
+							redBackground='font-weitght:normal;font-style:italic;color:#777777';	
+							greenBackground='font-weight:bold;font-style:normal;color:#000000';	
+							blueBackground='font-weight:normal;font-style:italic;color:#777777';	
 						}
 						if(currentComment.state == 'toBeValidated') {
-							blueBackground='background-color:blue;';	
-							commentState = 'blue';
+							redBackground='font-weitght:normal;font-style:italic;color:#777777';	
+							greenBackground='font-weight:normal;font-style:italic;color:#777777';	
+							blueBackground='font-weight:bold;font-style:normal;color:#000000';	
 						}
 				       	%>
-					<div id='red<%= currentComment.id %>' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>&nbsp;</div>
+					<div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Valid&eacute;</div>
+					<div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Refus&eacute;</div>
+					<div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>
+					<!--<div id='red<%= currentComment.id %>' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>&nbsp;</div>
 					<div id='green<%= currentComment.id %>' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>&nbsp;</div>
-					<div id='blue<%= currentComment.id %>' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>&nbsp;</div>
+					<div id='blue<%= currentComment.id %>' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>&nbsp;</div>-->
 				</div>
 			</div>
 			<% 
