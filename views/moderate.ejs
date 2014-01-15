@@ -20,13 +20,17 @@ function consultStory(storyId) {
 	</div>
 	<div>
 		<%
+		var formatDate = function(aDate) {
+			var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
+			return result;
+		};
 		for(var i = 0 ; i < storiesToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=storiesToValidate[i].id%>"><%= storiesToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithCommentsToValidate[i].author%></div>
-		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithCommentsToValidate[i].creationDate)%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesToValidate[i].author%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesToValidate[i].creationDate)%></div>
 		<%
 		}
 		%>
@@ -38,13 +42,13 @@ function consultStory(storyId) {
 	</div>
 	<div>
 		<%
-		for(var i = 0 ; i < storiesWithSpecialistOpinionToValidate.length ; i++) {
+		for(var i = 0 ; i < storiesWithSpecialistsOpinionsToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>
-			<a href="/stories/consult/<%=storiesWithSpecialistOpinionToValidate[i].id%>"><%= storiesWithSpecialistOpinionToValidate[i].title%></a>
+			<a href="/stories/consult/<%=storiesWithSpecialistsOpinionsToValidate[i].id%>"><%= storiesWithSpecialistsOpinionsToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithCommentsToValidate[i].author%></div>
-		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithCommentsToValidate[i].creationDate)%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesWithSpecialistsOpinionsToValidate[i].author%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesWithSpecialistsOpinionsToValidate[i].creationDate)%></div>
 		<%
 		}
 		%>
@@ -56,10 +60,6 @@ function consultStory(storyId) {
 	</div>
 	<div>
 		<%
-		var formatDate = function(aDate) {
-			var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
-			return result;
-		};
 		for(var i = 0 ; i < storiesWithCommentsToValidate.length ; i++) {
 		%>
 		<div class='storyTitle'>

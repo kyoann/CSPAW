@@ -6,6 +6,14 @@
 		<link rel='stylesheet' type='text/css' href='/style.css' />
 		<script src="/jquery-1.10.2.js"></script>
 		<script type='text/javascript'>
+			function newSpecialistOpinion() {
+				$("#newSpecialistOpinionDiv").css('display','block');
+			}
+			function addSpecialistOpinion() {
+				var text = $("#newSpecialistOpinionTextArea").val();
+				$("#newSpecialistOpinionText").val(text);
+				$("#newSpecialistOpinionForm").submit();
+			}
 			function newComment(commentId) {
 				if(commentId == undefined) {
 					$("#newRootCommentDiv").css('display','block');
@@ -40,7 +48,7 @@
 			var commentsStates = {};
 
 			function switchColor(aColor,aNumber) {
-					commentsStates[aNumber] = aColor;
+				commentsStates[aNumber] = aColor;
 				if(aColor == "red") {
 					$("#red"+aNumber).css('font-weight','bold');	
 					$("#red"+aNumber).css('font-style','');	
@@ -52,7 +60,7 @@
 					$("#blue"+aNumber).css('font-weight','');	
 					$("#blue"+aNumber).css('font-style','italic');	
 					$("#blue"+aNumber).css('color','#777777');	
-				//	$("#commentState"+aNumber).val("red");
+					//	$("#commentState"+aNumber).val("red");
 				}
 				if(aColor == "green") {
 					$("#red"+aNumber).css('font-weight','');	
@@ -137,9 +145,23 @@
 		<% } %>
 		<div class='specialistOpinionDiv structureElement'>
 			<div class='structureName'>Opinions des sp&eacute;cialistes</div>
-			<div class='specialistOpinionTitle'>L'avis du coach</div>
-			<div class='specialistOpinion'>Risquer la confiance est indispensable. Votre sur-investissement est peut-&ecirc;tre symptomatique d'un manque.</div>
-			<button>Ajouter un avis</button>
+			<%
+			for(var i = 0 ; i < specialistsOpinions.length ; i++) {
+			%> 
+			<div class='specialistOpinionTitle'>L'avis de <%=specialistsOpinions[i].author%></div>
+			<div class='specialistOpinion'><%=specialistsOpinions[i].text%></div>
+			<%}%>
+			<button onclick='newSpecialistOpinion()'>Ajouter un avis</button>
+			<div id='newSpecialistOpinionDiv' style='display:none'>
+				<div class='specialistOpinionTitle'>L'avis de Jean Malaury, anthropogeographe</div>
+				<textarea id='newSpecialistOpinionTextArea'></textarea>
+				<button onclick='addSpecialistOpinion()'>&rarr;</button>
+			</div>
+			<form id='newSpecialistOpinionForm' method='POST' action='/stories/newSpecialistOpinion' enctype='application/x-www-form-urlencoded'>
+				<input type='hidden' value='put' name='_method'/>
+				<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
+				<input type='hidden' id='newSpecialistOpinionText' name='newSpecialistOpinionText' value=''/>
+			</form>
 		</div>
 		<div class='comments structureElement'>
 			<div class='structureName'>Commentaires</div>
@@ -170,26 +192,26 @@
 				</div>
 				<div style='display:inline;float:right;'>
 					<%
-						var redBackground = '';
-						var greenBackground = '';
-						var blueBackground = '';
-						if(currentComment.state == 'refused') {
-							//redBackground='background-color:red;';	
-							redBackground='font-weitght:bold;font-style:normal;color:#000000';	
-							greenBackground='font-weight:normal;font-style:italic;color:#777777';	
-							blueBackground='font-weight:normal;font-style:italic;color:#777777';	
-						}
-						if(currentComment.state == 'validated') {
-							redBackground='font-weitght:normal;font-style:italic;color:#777777';	
-							greenBackground='font-weight:bold;font-style:normal;color:#000000';	
-							blueBackground='font-weight:normal;font-style:italic;color:#777777';	
-						}
-						if(currentComment.state == 'toBeValidated') {
-							redBackground='font-weitght:normal;font-style:italic;color:#777777';	
-							greenBackground='font-weight:normal;font-style:italic;color:#777777';	
-							blueBackground='font-weight:bold;font-style:normal;color:#000000';	
-						}
-				       	%>
+					var redBackground = '';
+					var greenBackground = '';
+					var blueBackground = '';
+					if(currentComment.state == 'refused') {
+					//redBackground='background-color:red;';	
+					redBackground='font-weitght:bold;font-style:normal;color:#000000';	
+					greenBackground='font-weight:normal;font-style:italic;color:#777777';	
+					blueBackground='font-weight:normal;font-style:italic;color:#777777';	
+					}
+					if(currentComment.state == 'validated') {
+					redBackground='font-weitght:normal;font-style:italic;color:#777777';	
+					greenBackground='font-weight:bold;font-style:normal;color:#000000';	
+					blueBackground='font-weight:normal;font-style:italic;color:#777777';	
+					}
+					if(currentComment.state == 'toBeValidated') {
+					redBackground='font-weitght:normal;font-style:italic;color:#777777';	
+					greenBackground='font-weight:normal;font-style:italic;color:#777777';	
+					blueBackground='font-weight:bold;font-style:normal;color:#000000';	
+					}
+					%>
 					<div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Valid&eacute;</div>
 					<div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Refus&eacute;</div>
 					<div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>

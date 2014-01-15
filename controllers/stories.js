@@ -34,6 +34,7 @@ exports.new = function(req,res) {
 exports.create = function(req,res) {
 	console.log('creating '+req.body.title+" "+model.createStory);
 
+	//var story = model.createStory('Martin',new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
 	var story = model.createStory('Martin',new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
 
 	var storyView = storyModel2storyView(story);
@@ -54,7 +55,6 @@ exports.create = function(req,res) {
 };
 
 exports.addComment = function(req,res) {
-	console.log("Hello");
 	var storyId = req.body.storyId;
 	var commentId = req.body.commentId;
 	var comment = req.body.commentText;
@@ -76,14 +76,34 @@ exports.addComment = function(req,res) {
 		  
 	//res.redirect('/stories/consult');
 };
+exports.newSpecialistOpinion = function(req,res) {
+	console.log("Hello");
+	var storyId = req.body.storyId;
+	var specialistOpinionText = req.body.newSpecialistOpinionText;
+
+	var story = model.newSpecialistOpinion('Martin',storyId,specialistOpinionText);
+	var storyView = storyModel2storyView(story);
+	console.log(storyView);
+
+	storyView.canBeValidated = true;
+
+	res.render('consultStory',
+		   storyView, function(err,stuff) {
+			   if(!err) {
+				   res.write(stuff);
+				   res.end();
+			   }
+		   });
+		  
+	//res.redirect('/stories/consult');
+};
 
 exports.moderate = function(req,res) {
 	var newStories = model.getNewStories();
 	var storiesWithCommentsToValidate = model.getStoriesWithCommentsToValidate();
-	//TODO
-	var storiesWithSpecialistOpinionToValidate = [];
+	var storiesWithSpecialistsOpinionsToValidate = model.getStoriesWithSpecialistsOpinionsToValidate();
 	res.render('moderate',
-		   {storiesToValidate : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate, storiesWithSpecialistOpinionToValidate: storiesWithSpecialistOpinionToValidate}, function(err,stuff) {
+		   {storiesToValidate : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate, storiesWithSpecialistsOpinionsToValidate: storiesWithSpecialistsOpinionsToValidate}, function(err,stuff) {
 			   if(!err) {
 				   res.write(stuff);
 				   res.end();
@@ -132,5 +152,6 @@ function storyModel2storyView(aStory) {
 		feelings:aStory.feelings,
 		problem:aStory.problem,
 		comments:aStory.comments,
+		specialistsOpinions:aStory.specialistsOpinions
 	};
 }

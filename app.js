@@ -34,6 +34,7 @@ app.configure(function() {
     app.get('/stories/moderate', storiesController.moderate);
     app.put('/stories/validate', storiesController.validateStory);
     app.get('/stories/consult/:storyId', storiesController.consult);
+    app.put('/stories/newSpecialistOpinion', storiesController.newSpecialistOpinion);
 
     var usersController = require('./controllers/users');
     app.get('/users/new', usersController.new);

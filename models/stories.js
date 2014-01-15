@@ -3,12 +3,24 @@ var model = require('./dataModel');
 var stories = [];
 
 exports.createStory = function(userId,date,title,facts,feelings,problem) {
-	console.log('creating '+title+" "+model.story);
 	var index = stories.length;
 
-	stories[index] = new model.story(index,title,facts,feelings,problem,userId,new Date());
+	stories[index] = new model.story(index,title,facts,feelings,problem,userId,date);
+	console.log("hello1");
 	return stories[index];
 };
+
+exports.newSpecialistOpinion = function(userId,storyId,specialistOpinionText) {
+	var story = exports.getStory(storyId);
+	story.version++;
+	story.specialistsOpinionsToValidate++;
+	var specialistOpinion = new model.specialistOpinion(story.version,"L'avis de Jean Malaury, anthropo-geographe",new Date(),specialistOpinionText);
+
+	story.specialistsOpinions.push(specialistOpinion);
+
+	return story;
+};
+	
 exports.addComment = function (userId,storyId,commentId,text) {
 	console.log('adding comment '+commentId);
 	var story = exports.getStory(storyId);
@@ -69,7 +81,18 @@ exports.getStoriesWithCommentsToValidate = function() {
 	}
 	return storiesWithCommentsToValidate;
 };
+exports.getStoriesWithSpecialistsOpinionsToValidate = function() {
+	var storiesWithSpecialistsOpinionsToValidate = [];
 
+	for(var i = 0 ; i < stories.length ; i++) {
+		if(stories[i].specialistsOpinionsToValidate !== 0) {
+			storiesWithSpecialistsOpinionsToValidate.push(stories[i]);
+		}
+	}
+	console.log(storiesWithSpecialistsOpinionsToValidate.length + "stories with so to validate");
+
+	return storiesWithSpecialistsOpinionsToValidate;
+};
 exports.searchStories = function() {
 	return stories;
 };
