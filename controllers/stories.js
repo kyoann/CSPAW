@@ -1,4 +1,5 @@
 var model = require('../models/stories');
+var usersController = require('./users');
 
 exports.consult = function(req,res) {
 	var story = model.getStory(req.params.storyId);
@@ -10,6 +11,7 @@ exports.consult = function(req,res) {
 	if(story.state == 'new') {
 		storyView.canBeValidated = true;
 	}
+	usersController.addConnexionView(req,storyView);
 
 	res.render('consultStory',
 		   storyView, function(err,stuff) {
@@ -20,7 +22,9 @@ exports.consult = function(req,res) {
 		   });
 };
 exports.new = function(req,res) {
-	res.render('createStory', function(err,stuff) {
+	var view = {};
+	usersController.addConnexionView(req,view);
+	res.render('createStory', view, function(err,stuff) {
 		if(!err) {
 			res.write(stuff);
 			res.end();
@@ -38,6 +42,7 @@ exports.create = function(req,res) {
 	var story = model.createStory('Martin',new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
 
 	var storyView = storyModel2storyView(story);
+	usersController.addConnexionView(req,storyView);
 
 	//TODO
 	storyView.canBeValidated = false;
@@ -62,7 +67,7 @@ exports.addComment = function(req,res) {
 	//TODO
 	var story = model.addComment('Martin',storyId,commentId,comment);
 	var storyView = storyModel2storyView(story);
-	console.log(storyView);
+	usersController.addConnexionView(req,storyView);
 
 	storyView.canBeValidated = true;
 
@@ -83,7 +88,7 @@ exports.newSpecialistOpinion = function(req,res) {
 
 	var story = model.newSpecialistOpinion('Martin',storyId,specialistOpinionText);
 	var storyView = storyModel2storyView(story);
-	console.log(storyView);
+	usersController.addConnexionView(req,storyView);
 
 	storyView.canBeValidated = true;
 
@@ -102,14 +107,16 @@ exports.moderate = function(req,res) {
 	var newStories = model.getNewStories();
 	var storiesWithCommentsToValidate = model.getStoriesWithCommentsToValidate();
 	var storiesWithSpecialistsOpinionsToValidate = model.getStoriesWithSpecialistsOpinionsToValidate();
-	res.render('moderate',
-		   {storiesToValidate : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate, storiesWithSpecialistsOpinionsToValidate: storiesWithSpecialistsOpinionsToValidate}, function(err,stuff) {
+	var view = {storiesToValidate : newStories, storiesWithCommentsToValidate : storiesWithCommentsToValidate, storiesWithSpecialistsOpinionsToValidate: storiesWithSpecialistsOpinionsToValidate};
+
+	usersController.addConnexionView(req,view);
+	res.render('moderate',view
+		   , function(err,stuff) {
 			   if(!err) {
 				   res.write(stuff);
 				   res.end();
 			   }
 		   });
-
 };
 
 exports.validateStory = function(req,res) {
@@ -119,6 +126,7 @@ exports.validateStory = function(req,res) {
 	console.log(story);
 	var storyModel =storyModel2storyView(story);
 	storyModel.canBeValidated = false;
+	usersController.addConnexionView(req,storyModel);
 	res.render('consultStory',
 		   storyModel, function(err,stuff) {
 			   if(!err) {
@@ -134,6 +142,7 @@ exports.validateComments = function(req,res) {
 	var story = model.validateComments(storyId,commentsStates);
 	var storyModel =storyModel2storyView(story);
 	storyModel.canBeValidated = true;
+	usersController.addConnexionView(req,storyModel);
 	res.render('consultStory',
 		   storyModel, function(err,stuff) {
 			   if(!err) {

@@ -34,3 +34,45 @@ exports.update = function(req,res) {
 function userModel2userView(aStory) {
 	return {storyId:aStory.id,title:aStory.title,facts:aStory.facts,feelings:aStory.feelings,problem:aStory.problem,comments:aStory.comments};
 }
+var users = [
+	{ id: 1, username: 'thi', password: 'ly' }
+];
+
+
+exports.findById = function(id, fn) {
+	var idx = id - 1;
+	if (users[idx]) {
+		fn(null, users[idx]);
+	} else {
+		fn(new Error('User ' + id + ' does not exist'));
+	}
+}
+
+exports.findByUsername = function(username, fn) {
+	for (var i = 0, len = users.length; i < len; i++) {
+		var user = users[i];
+		if (user.username === username) {
+			return fn(null, user);
+		}
+	}
+	return fn(null, null);
+}
+
+exports.login = function(req,res) {
+	console.log("users.login");
+	res.redirect('/');
+
+};
+
+exports.logout = function(req,res) {
+};
+
+exports.addConnexionView = function(aReq,aView) {
+	var connexion;
+	aView.connexion = {};	
+	if(aReq.user) {
+		aView.connexion.username = aReq.user.username;
+	}
+	console.log(JSON.stringify(aView));
+};
+
