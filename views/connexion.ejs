@@ -4,27 +4,35 @@
 Connexion
 </div>
 
-<% if(!connexion.username) { %>
 <div class='connexion'>
-<% if (connexion.message) { %>
-<p><%= connexion.message %></p>
-<% } %>
-<script type="text/ecmascript">
-	function connect() {
-		var connexionForm = document.getElementById("connexionForm");
-		connexionForm.submit();	
-	}
-</script>
-<form style='display:inline;' id='connexionForm' method='POST' action='/login' enctype='application/x-www-form-urlencoded'>
-<input type='text' id='username' name='username'/>
-<input type='password' id='password' name='password'/>
-<a onclick='connect()'>Se connecter</a>
+<% if(!connexion.username) { %>
+	<% if (connexion.message) { %>
+		<p><%= connexion.message %></p>
+			<% } %>
+			<script type="text/ecmascript">
+			function connect() {
+				var connexionForm = document.getElementById("connexionForm");
+				connexionForm.submit();	
+			}
+	</script>
+		<form style='display:inline;' id='connexionForm' method='POST' action='/login' enctype='application/x-www-form-urlencoded'>
+		<input type='text' id='username' name='username'/>
+		<input type='password' id='password' name='password'/>
+		<a onclick='connect()'>Se connecter</a>
 
-</form>
-<a href='createProfil.htm'>Cr&eacute;er un profil</a>
-</div>
+		</form>
+		<a style='cursor:pointer;font-style:bold' href='createProfil.htm'>Cr&eacute;er un profil</a>
 
-<% } else { %>
-<div><%=connexion.username%></div>
-<% }%>
-</div>
+		<% } else { %>
+			<script type="text/ecmascript">
+				function logout() {
+					var logoutForm = document.getElementById("logoutForm");
+					logoutForm.submit();	
+				}
+			</script>
+				<div style='display:inline;' ><%=connexion.username%></div>
+				<form style='display:inline;' id='logoutForm' method='POST' action='/logout' enctype='application/x-www-form-urlencoded'>
+				<a onclick='logout()'> Se d&eacute;connecter </a>
+				<% }%>
+				</div>
+				</div>

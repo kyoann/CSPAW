@@ -65,6 +65,8 @@ exports.login = function(req,res) {
 };
 
 exports.logout = function(req,res) {
+	req.logOut();
+	res.redirect('/');
 };
 
 exports.addConnexionView = function(aReq,aView) {

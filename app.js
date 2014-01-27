@@ -74,7 +74,7 @@ app.configure(function() {
 	app.put('/users/update', usersController.update);
 	app.post('/login', passport.authenticate('local'),usersController.login);
 	//app.post('/login', usersController.login);
-	app.get('/logout',usersController.logout);
+	app.post('/logout',usersController.logout);
 
 });
 http.createServer(app).listen(3000);
