@@ -1,9 +1,10 @@
 var model = require('../models/users');
 
 exports.new = function(req,res) {
-	res.render('createUser', function(err,stuff) {
+	var view = exports.addConnexionView(req,{});
+
+	res.render('createProfil', view, function(err,stuff) {
 		if(!err) {
-			console.log(stuff);
 			res.write(stuff);
 			res.end();
 		}
@@ -16,10 +17,13 @@ exports.create = function(req,res) {
 
 	user.stories = [];
 
-	res.render('consultUser',
-			userModel2userView(user), function(err,stuff) {
+	var view = userModel2userView(user);
+	view.connexion = {};	
+	view.connexion.username = user.id;
+
+	res.render('consultProfil',
+			view, function(err,stuff) {
 				if(!err) {
-					console.log(stuff);
 					res.write(stuff);
 					res.end();
 				}
@@ -31,11 +35,19 @@ exports.update = function(req,res) {
 
 
 
-function userModel2userView(aStory) {
-	return {storyId:aStory.id,title:aStory.title,facts:aStory.facts,feelings:aStory.feelings,problem:aStory.problem,comments:aStory.comments};
+function userModel2userView(aUser) {
+	return {
+		userId:aUser.id,
+		age:aUser.age,
+		gender:aUser.age,
+		studies:aUser.studies,
+		hierarchyLevel:aUser.hierarchyLevel,
+		activity:aUser.activity
+	};
 }
 var users = [
-	{ id: 1, username: 'thi', password: 'ly' }
+	{ id: 1, username: 'Thi', password: 'Ly' },
+	{ id: 2, username: 'a', password: 'a' }
 ];
 
 
@@ -69,8 +81,8 @@ exports.logout = function(req,res) {
 	res.redirect('/');
 };
 
+
 exports.addConnexionView = function(aReq,aView) {
-	var connexion;
 	aView.connexion = {};	
 	if(aReq.user) {
 		aView.connexion.username = aReq.user.username;
