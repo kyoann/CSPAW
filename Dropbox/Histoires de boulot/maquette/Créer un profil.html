@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://localhost:3000/users/new -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Créer un profil</title>
+<link rel="stylesheet" type="text/css" href="./Créer un profil_files/style.css">
+</head>
+
+<body>
+<form method="POST" action="http://localhost:3000/users/create" enctype="application/x-www-form-urlencoded">
+	<div>
+		<input id="userId" name="userId" type="text">Identifiant
+		<input id="password" name="password" type="password">Mot de passe
+		Age :
+		<select id="age" name="age">
+			<option value=""></option>
+			<option value="18 - 25">18 - 25</option>
+			<option value="25 - 30">25 - 30</option>
+			<option value="30 - 35">30 - 35</option>
+			<option value="35 - 40">35 - 40</option>
+			<option value="40 - 45">40 - 45</option>
+			<option value="45 - 50">45 - 50</option>
+			<option value="50 - 55">50 - 55</option>
+			<option value="55 - 60">55 - 60</option>
+			<option value="60 - ...">60 - ...</option>
+		</select>
+		Genre :
+		<select id="gender" name="gender">
+			<option value=""></option>
+			<option value="M">M</option>
+			<option value="F">F</option>
+		</select>
+		Niveau d'étude :
+		<select id="studies" name="studies">
+			<option value=""></option>
+			<option value="NoDiploma">Sans diplôme</option>
+			<option value="bac">Bac</option>
+			<option value="+2">Bac +2</option>
+			<option value="+3">Bac +3</option>
+			<option value="+4">Bac +4</option>
+			<option value="+5">Bac +5 et plus</option>
+		</select>Statut :
+		<select id="hierarchyLevel" name="hierarchyLevel">
+			<option value=""></option>
+			<option value="Cadre">Cadre</option>
+			<option value="NonCadre">Non cadre</option>
+		</select>Secteur :
+		<select id="activity" name="activity">
+			<option value=""></option>
+			<option value="Droit">Droit</option>
+			<option value="Banque">Banque</option>
+			<option value="Batiment">BÃ¢timent</option>
+		</select>
+		<input type="submit">
+	
+</div></form>
+
+
+
+</body></html>

@@ -1,5 +1,6 @@
 var model = require('../models/stories');
 var usersController = require('./users');
+var usersModel = require('../models/users');
 
 exports.consult = function(req,res) {
 	var story = model.getStory(req.params.storyId);
@@ -37,26 +38,29 @@ exports.new = function(req,res) {
 
 exports.create = function(req,res) {
 	console.log('creating '+req.body.title+" "+model.createStory);
+	var user = usersModel.findByUsername(req.user.username,function(err,user) {
+		if(!err) {
+		var story = model.createStory(user.id,user.username,new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
 
-	//var story = model.createStory('Martin',new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
-	var story = model.createStory('Martin',new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
+		var storyView = storyModel2storyView(story);
+		usersController.addConnexionView(req,storyView);
 
-	var storyView = storyModel2storyView(story);
-	usersController.addConnexionView(req,storyView);
+		//TODO
+		storyView.canBeValidated = false;
+		if(story.state == 'new') {
+			storyView.canBeValidated = true;
+		}
 
-	//TODO
-	storyView.canBeValidated = false;
-	if(story.state == 'new') {
-		storyView.canBeValidated = true;
-	}
+		res.render('consultStory',
+			   storyView, function(err,stuff) {
+				   if(!err) {
+					   res.write(stuff);
+					   res.end();
+				   }
+			   });
+		}
+	});
 
-	res.render('consultStory',
-		   storyView, function(err,stuff) {
-			   if(!err) {
-				   res.write(stuff);
-				   res.end();
-			   }
-		   });
 };
 
 exports.addComment = function(req,res) {
@@ -78,8 +82,8 @@ exports.addComment = function(req,res) {
 				   res.end();
 			   }
 		   });
-		  
-	//res.redirect('/stories/consult');
+
+		   //res.redirect('/stories/consult');
 };
 exports.newSpecialistOpinion = function(req,res) {
 	console.log("Hello");
@@ -99,8 +103,8 @@ exports.newSpecialistOpinion = function(req,res) {
 				   res.end();
 			   }
 		   });
-		  
-	//res.redirect('/stories/consult');
+
+		   //res.redirect('/stories/consult');
 };
 
 exports.moderate = function(req,res) {
@@ -111,12 +115,12 @@ exports.moderate = function(req,res) {
 
 	usersController.addConnexionView(req,view);
 	res.render('moderate',view
-		   , function(err,stuff) {
-			   if(!err) {
-				   res.write(stuff);
-				   res.end();
-			   }
-		   });
+		, function(err,stuff) {
+	if(!err) {
+		res.write(stuff);
+		res.end();
+	}
+		});
 };
 
 exports.validateStory = function(req,res) {
@@ -161,6 +165,7 @@ function storyModel2storyView(aStory) {
 		feelings:aStory.feelings,
 		problem:aStory.problem,
 		comments:aStory.comments,
-		specialistsOpinions:aStory.specialistsOpinions
+		specialistsOpinions:aStory.specialistsOpinions,
+		author:aStory.username,
 	};
 }

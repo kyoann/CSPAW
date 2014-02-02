@@ -34,8 +34,10 @@ Connexion
 				}
 			</script>
 				<div style='display:inline;' ><%=connexion.username%></div>
+				<a href='/users/consult/<%=connexion.username%>'>Ma page</a>
 				<form style='display:inline;' id='logoutForm' method='POST' action='/logout' enctype='application/x-www-form-urlencoded'>
 				<a onclick='logout()' style='cursor:pointer;font-style:bold'> Se d&eacute;connecter </a>
+				</form>
 				<% }%>
 				</div>
 				</div>

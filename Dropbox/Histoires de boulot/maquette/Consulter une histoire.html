@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://localhost:3000/stories/validate -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Consulter une histoire</title>
+		<link rel="stylesheet" type="text/css" href="./Consulter une histoire_files/style.css">
+		<script src="./Consulter une histoire_files/jquery-1.10.2.js"></script>
+		<script type="text/javascript">
+			function newSpecialistOpinion() {
+				$("#newSpecialistOpinionDiv").css('display','block');
+			}
+			function addSpecialistOpinion() {
+				var text = $("#newSpecialistOpinionTextArea").val();
+				$("#newSpecialistOpinionText").val(text);
+				$("#newSpecialistOpinionForm").submit();
+			}
+			function newComment(commentId) {
+				if(commentId == undefined) {
+					$("#newRootCommentDiv").css('display','block');
+				}
+				else {
+					$("#inputCommentDiv"+commentId).css('display','block');
+				}
+			}
+			function addComment(commentId) {
+				if(commentId == undefined) {
+					var text = $("#inputCommentText").val();
+				}
+				else {
+					var text = $("#inputCommentText"+commentId).val();
+					$("#commentId").val(commentId);
+				}
+				$("#commentText").val(text);
+				$("#commentForm").submit();
+			}
+		       	
+		</script>
+		</head>
+
+		<body style="">
+		<div class="structureElement">
+
+<div class="structureName">
+Connexion
+</div>
+
+<div class="connexion">
+
+	
+			<script type="text/ecmascript">
+			function connect() {
+				var connexionForm = document.getElementById("connexionForm");
+				connexionForm.submit();	
+			}
+			function createProfil() {
+				
+			}
+	</script>
+		<form style="display:inline;" id="connexionForm" method="POST" action="http://localhost:3000/login" enctype="application/x-www-form-urlencoded">
+		<input type="text" id="username" name="username">
+		<input type="password" id="password" name="password">
+		<a onclick="connect()" style="cursor:pointer;font-style:bold">Se connecter</a>
+
+		</form>
+		<a href="http://localhost:3000/users/new" style="cursor:pointer;font-style:bold">Créer un profil</a>
+
+		
+				</div>
+				</div>
+
+		<div class="story structureElement">
+			<div class="structureName">Histoire</div>
+			
+			<div class="storyTitle structureElement">
+				<div class="structureName">Titre</div>
+				Mon chef est stupide
+			</div>
+			
+			<div class="storyFacts structureElement">
+				<div class="structureName">Faits</div>Il prend toujours les mauvaises options.
+			</div>
+			<div class="storyFeelings structureElement"><div class="structureName">Ressenti</div>Je+serais+meilleur+%E0+sa+place.</div>
+			<div class="storyProblem structureElement"><div class="structureName">Problème</div>C'est moi qui assume ses erreurs.</div>
+			<div id="themes" class="structureElement">
+				<div class="structureName">
+					Thèmes abordés
+				</div>
+
+				
+				<div class="theme">Problème avec mon supérieur</div>
+				<div class="theme selected">Problème avec un collègue</div>
+				<div class="theme">Problème avec un subalterne</div>
+				<div class="theme">Rémunération</div>
+				<div class="theme">Congés</div>
+				<div class="theme">Amour / Sexe</div>
+				<div class="theme selected">Management</div>
+				<div class="theme selected">Nouveau poste</div>
+				<div class="theme">Licenciement / reclassement</div>
+				<div class="theme selected">Ambiance</div>
+			</div>
+		</div>
+		
+		<div class="specialistOpinionDiv structureElement">
+			<div class="structureName">Opinions des spécialistes</div>
+			
+			<button onclick="newSpecialistOpinion()">Ajouter un avis</button>
+			<div id="newSpecialistOpinionDiv" style="display:none">
+				<div class="specialistOpinionTitle">L'avis de Jean Malaury, anthropogeographe</div>
+				<textarea id="newSpecialistOpinionTextArea"></textarea>
+				<button onclick="addSpecialistOpinion()">&#8594;</button>
+			</div>
+			<form id="newSpecialistOpinionForm" method="POST" action="http://localhost:3000/stories/newSpecialistOpinion" enctype="application/x-www-form-urlencoded">
+				<input type="hidden" value="put" name="_method">
+				<input type="hidden" id="storyId" name="storyId" value="2">
+				<input type="hidden" id="newSpecialistOpinionText" name="newSpecialistOpinionText" value="">
+			</form>
+		</div>
+		<div class="comments structureElement">
+			<div class="structureName">Commentaires</div>
+			
+			<div class="comment" style="margin-left:0px">
+				<div class="commentMeta">Patricia</div>
+				Peut+%EAtre+devriez-vous+vous+remettre+en+cause+vous+m%EAme+%21
+				<button onclick="newComment(1)">&#8594;</button>
+				<div id="inputCommentDiv1" style="display:none">
+					<textarea id="inputCommentText1"></textarea>
+					<button onclick="addComment(1)">&#8594;</button>
+				</div>
+				<div style="display:inline;float:right;">
+					
+					<div id="red1" style="display:inline-block;cursor:pointer;font-weitght:normal;font-style:italic;color:#777777" onclick="switchColor(&quot;red&quot;,1)">Validé</div>
+					<div id="green1" style="display:inline-block;cursor:pointer;font-weight:normal;font-style:italic;color:#777777" onclick="switchColor(&quot;green&quot;,1)">Refusé</div>
+					<div id="blue1" style="display:inline-block;cursor:pointer;font-weight:bold;font-style:normal;color:#000000" onclick="switchColor(&quot;blue&quot;,1)">A valider</div>
+					<!--<div id='red1' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;font-weitght:normal;font-style:italic;color:#777777' onclick='switchColor("red",1)'>&nbsp;</div>
+					<div id='green1' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer;font-weight:normal;font-style:italic;color:#777777' onclick='switchColor("green",1)'>&nbsp;</div>
+					<div id='blue1' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;font-weight:bold;font-style:normal;color:#000000' onclick='switchColor("blue",1)'>&nbsp;</div>-->
+				</div>
+			</div>
+			
+			<div class="comment" style="margin-left:20px">
+				<div class="commentMeta">Patricia</div>
+				Ah+non%2C+%E7a+jamais+%21
+				<button onclick="newComment(2)">&#8594;</button>
+				<div id="inputCommentDiv2" style="display:none">
+					<textarea id="inputCommentText2"></textarea>
+					<button onclick="addComment(2)">&#8594;</button>
+				</div>
+				<div style="display:inline;float:right;">
+					
+					<div id="red2" style="display:inline-block;cursor:pointer;font-weitght:normal;font-style:italic;color:#777777" onclick="switchColor(&quot;red&quot;,2)">Validé</div>
+					<div id="green2" style="display:inline-block;cursor:pointer;font-weight:normal;font-style:italic;color:#777777" onclick="switchColor(&quot;green&quot;,2)">Refusé</div>
+					<div id="blue2" style="display:inline-block;cursor:pointer;font-weight:bold;font-style:normal;color:#000000" onclick="switchColor(&quot;blue&quot;,2)">A valider</div>
+					<!--<div id='red2' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;font-weitght:normal;font-style:italic;color:#777777' onclick='switchColor("red",2)'>&nbsp;</div>
+					<div id='green2' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer;font-weight:normal;font-style:italic;color:#777777' onclick='switchColor("green",2)'>&nbsp;</div>
+					<div id='blue2' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;font-weight:bold;font-style:normal;color:#000000' onclick='switchColor("blue",2)'>&nbsp;</div>-->
+				</div>
+			</div>
+			
+			<div>
+				<div>Proposer un commentaire
+					<button onclick="newComment(undefined)">&#8594;</button>
+				</div>
+				<div id="newRootCommentDiv" style="display:none">
+					<textarea id="inputCommentText"></textarea>
+					<button onclick="addComment()">&#8594;</button>
+				</div>
+			</div>
+			<div>
+				<div>Modérer les commentaires
+					<button onclick="moderateComments()">&#8594;</button>
+				</div>
+			</div>
+		</div>
+		<form id="commentForm" method="POST" action="http://localhost:3000/stories/addComment" enctype="application/x-www-form-urlencoded">
+			<input type="hidden" value="put" name="_method">
+			<input type="hidden" id="storyId" name="storyId" value="2">
+			<input type="hidden" id="commentId" name="commentId">
+			<input type="hidden" id="commentText" name="commentText">
+		</form>
+		<form id="commentsValidationForm" method="POST" action="http://localhost:3000/stories/validateComments" enctype="application/x-www-form-urlencoded">
+			<input type="hidden" value="put" name="_method">
+			<input type="hidden" id="storyId" name="storyId" value="2">
+			<input type="hidden" id="commentsStates" name="commentsStates" value="">
+		</form>
+	
+	
+	
+</body></html>

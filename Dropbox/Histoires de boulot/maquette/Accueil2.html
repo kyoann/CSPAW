@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Accueil</title>
+		<link rel="stylesheet" type="text/css" href="./Accueil2_files/style.css">
+	</head>
+
+	<body>
+		<div class="structureElement">
+
+<div class="structureName">
+Connexion
+</div>
+
+<div class="connexion">
+
+			<script type="text/ecmascript">
+				function logout() {
+					var logoutForm = document.getElementById("logoutForm");
+					logoutForm.submit();	
+				}
+			</script>
+				<div style="display:inline;">Thi</div>
+				<form style="display:inline;" id="logoutForm" method="POST" action="http://localhost:3000/logout" enctype="application/x-www-form-urlencoded">
+				<a onclick="logout()" style="cursor:pointer;font-style:bold"> Se déconnecter </a>
+				
+				</form></div>
+				</div>
+
+		<div class="structureElement">
+			<div class="structureName">
+				Accueil
+			</div>
+			<div id="intro">Ce site a pour objectif de vous permettre de partager des problèmes humains dans le cadre d'une activité professionnelle et de bénéficier d'un soutien moral et de clefs de compréhension.</div>
+			<div id="actions">
+				<a href="http://localhost:3000/searchStory.htm">Rechercher une histoire</a>
+				<a href="http://localhost:3000/stories/new">Raconter une histoire</a>
+				<a href="http://localhost:3000/stories/moderate">Modérer les histoires</a>
+			</div>
+		</div>
+		<div class="structureElement">
+			<div class="structureName">
+				Actualités
+			</div>
+			<div id="events">
+				Histoires récemment ajoutée :<br>
+				<div class="story">Histoire 1</div>
+				<div class="story">Histoire 2</div>
+				<div class="story">Histoire 3</div>
+			</div>
+		</div>
+	
+
+
+</body></html>

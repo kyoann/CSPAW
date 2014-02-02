@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://localhost:3000/stories/moderate -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Afficher la liste des histoires, des commentaires et des avis à modérer</title>
+<link rel="stylesheet" type="text/css" href="./Afficher la liste des histoires, des commentaires et des avis à modérer_files/style.css">
+<script src="./Afficher la liste des histoires, des commentaires et des avis à modérer_files/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+function consultStory(storyId) {
+	$("#storyId").val(storyId);
+	$("#consultStoryForm").submit();	
+}
+</script>
+</head>
+
+<body style="">
+		<div class="structureElement">
+
+<div class="structureName">
+Connexion
+</div>
+
+<div class="connexion">
+
+	
+			<script type="text/ecmascript">
+			function connect() {
+				var connexionForm = document.getElementById("connexionForm");
+				connexionForm.submit();	
+			}
+			function createProfil() {
+				
+			}
+	</script>
+		<form style="display:inline;" id="connexionForm" method="POST" action="http://localhost:3000/login" enctype="application/x-www-form-urlencoded">
+		<input type="text" id="username" name="username">
+		<input type="password" id="password" name="password">
+		<a onclick="connect()" style="cursor:pointer;font-style:bold">Se connecter</a>
+
+		</form>
+		<a href="http://localhost:3000/users/new" style="cursor:pointer;font-style:bold">Créer un profil</a>
+
+		
+				</div>
+				</div>
+
+<div class="structureElement">
+	<div class="structureName">
+		Liste des histoires à valider
+	</div>
+	<div>
+		
+		<div class="storyTitle">
+			<a href="http://localhost:3000/stories/consult/2">Mon chef est stupide</a>
+		</div>
+		<div class="storyAuthor" style="display:inline;">Rédigé par undefined</div>
+		<div class="storyDate" style="display:inline;">à 21:31 le 29/1/114</div>
+		
+	</div>
+</div>
+<div class="structureElement">
+	<div class="structureName">
+		Liste des avis à valider
+	</div>
+	<div>
+		
+	</div>
+</div>
+<div class="structureElement">
+	<div class="structureName">
+		Liste des commentaires à valider
+	</div>
+	<div>
+		
+		<div class="storyTitle">
+			<a href="http://localhost:3000/stories/consult/2">Mon chef est stupide</a>
+		</div>
+		<div class="storyAuthor" style="display:inline;">Rédigé par undefined</div>
+		<div class="storyDate" style="display:inline;">à 21:31 le 29/1/114</div>
+		
+	</div>
+</div>
+<form id="consultStoryForm" method="POST" action="http://localhost:3000/stories/consult" enctype="application/x-www-form-urlencoded">
+	<input type="hidden" id="storyId" name="storyId">
+</form>
+
+
+</body></html>

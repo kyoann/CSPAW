@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<title>Consulter le profil de <%= userId %></title>
+	<title>Consulter le profil de <%= id %></title>
 		<link rel='stylesheet' type='text/css' href='/style.css' />
 	</head>
 	<body>
@@ -11,7 +11,7 @@
 				Mes informations
 			</div>
 			<div class='info'>
-				<%= userId %>
+				<%= username %>
 			</div>
 			<div class='info'>
 				<%= age %>
@@ -27,6 +27,28 @@
 			</div>
 			<div class='info'>
 				<%= activity %>
+			</div>
+		</div>
+		<div class='structureElement'>
+			<div class='structureName'>
+				Liste des histoires 
+			</div>
+			<div>
+				<%
+				var formatDate = function(aDate) {
+				var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
+				return result;
+				};
+				for(var i = 0 ; i < stories.length ; i++) {
+				%>
+				<div class='storyTitle'>
+					<a href="/stories/consult/<%=stories[i].id%>"><%= stories[i].title%></a>
+				</div>
+				<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= stories[i].author%></div>
+				<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(stories[i].creationDate)%></div>
+				<%
+				}
+				%>
 			</div>
 		</div>
 		<div class='structureElement'>
@@ -59,5 +81,5 @@
 			<div class='story'>Histoire 2</div>
 			<div class='story'>Histoire 3</div>
 		</div>
-	</body>
-</html>
+		</body>
+		</html>

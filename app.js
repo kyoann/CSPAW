@@ -4,17 +4,17 @@ app = express(),
 passport = require('passport'),
 passport_local = require('passport-local'),
 LocalStrategy = passport_local.Strategy,
+usersModel = require('./models/users'),
 users = require('./controllers/users');
 
 
 passport.serializeUser(function(user, done) {
 	console.log("serialize:"+user);
-	done(null, user.id);
+	done(null, user.username);
 });
 
-passport.deserializeUser(function(id, done) {
-	console.log("deserialize:"+id);
-	users.findById(id, function (err, user) {
+passport.deserializeUser(function(username, done) {
+	usersModel.findByUsername(username, function (err, user) {
 		done(err, user);
 	});
 });
@@ -23,7 +23,7 @@ passport.use(new LocalStrategy(
 	function(username, password, done) {
 
 	console.log("find:"+username);
-	users.findByUsername(username, function(err, user) {
+	usersModel.findByUsername(username, function(err, user) {
 		if (err) { return done(err); }
 		if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
 		if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
@@ -72,9 +72,9 @@ app.configure(function() {
 	app.get('/users/new', usersController.new);
 	app.post('/users/create', usersController.create);
 	app.put('/users/update', usersController.update);
-	app.post('/login', passport.authenticate('local'),usersController.login);
-	//app.post('/login', usersController.login);
 	app.post('/logout',usersController.logout);
+	app.post('/login', passport.authenticate('local'),usersController.login);
+	app.get('/users/consult/:username', usersController.consult);
 
 });
 http.createServer(app).listen(3000);

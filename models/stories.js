@@ -2,13 +2,22 @@ var model = require('./dataModel');
 
 var stories = [];
 
-exports.createStory = function(userId,date,title,facts,feelings,problem) {
+exports.createStory = function(userId,username,date,title,facts,feelings,problem) {
 	var index = stories.length;
 
-	stories[index] = new model.story(index,title,facts,feelings,problem,userId,date);
+	stories[index] = new model.story(index,title,facts,feelings,problem,userId,date,username);
 	console.log("hello1");
 	return stories[index];
 };
+exports.getUserStories = function(userId,done) {
+	var userStories = [];
+	for(var i = 0 ; i < stories.length ; i++) {
+		if(stories[i].userid === userId) {
+			userStories.push(stories[i]);		
+		}
+	}
+	done(null,userStories);
+}
 
 exports.newSpecialistOpinion = function(userId,storyId,specialistOpinionText) {
 	var story = exports.getStory(storyId);

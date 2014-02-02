@@ -1,4 +1,4 @@
-exports.story = function (id,title,facts,feelings,problem,userId,date) {
+exports.story = function (id,title,facts,feelings,problem,userId,date,username) {
 	this.id = id,
 	this.version = 0,
 	this.title = title,
@@ -9,6 +9,7 @@ exports.story = function (id,title,facts,feelings,problem,userId,date) {
 	this.specialistsOpinions = [], 
 	this.state = 'new',
 	this.userId = userId,
+	this.username = username,
 	this.creationDate = date,
 	this.commentsToValidate = 0,
 	this.specialistsOpinionsToValidate = 0 
@@ -32,12 +33,14 @@ exports.specialistOpinion = function(id,author,creationDate,text) {
 	this.state = 'toBeValidated';
 }
 
-exports.user = function(id,password,age,hierarchyLevel,activity,gender,studies) {
+exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,studies,stories) {
 	this.id = id;
+	this.username= username;
 	this.password = password;
 	this.age = age;
 	this.hierarchyLevel = hierarchyLevel;
 	this.activity = activity;
 	this.gender = gender;
 	this.studies = studies;
+	this.stories = stories;
 }
