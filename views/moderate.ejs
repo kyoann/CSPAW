@@ -30,7 +30,7 @@ function consultStory(storyId) {
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=storiesToValidate[i].id%>"><%= storiesToValidate[i].title%></a>
 		</div>
-		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesToValidate[i].author%></div>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= storiesToValidate[i].username%></div>
 		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(storiesToValidate[i].creationDate)%></div>
 		<%
 		}

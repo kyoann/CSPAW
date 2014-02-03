@@ -10,9 +10,10 @@ exports.createStory = function(userId,username,date,title,facts,feelings,problem
 	return stories[index];
 };
 exports.getUserStories = function(userId,done) {
+	debugger;
 	var userStories = [];
 	for(var i = 0 ; i < stories.length ; i++) {
-		if(stories[i].userid === userId) {
+		if(stories[i].userId === userId) {
 			userStories.push(stories[i]);		
 		}
 	}
