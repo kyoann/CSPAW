@@ -68,8 +68,8 @@ exports.addComment = function(req,res) {
 	var commentId = req.body.commentId;
 	var comment = req.body.commentText;
 	console.log(model.addComment);
-	//TODO
-	var story = model.addComment('Martin',storyId,commentId,comment);
+	var user = req.user;
+	var story = model.addComment(user.username,storyId,commentId,comment);
 	var storyView = storyModel2storyView(story);
 	usersController.addConnexionView(req,storyView);
 
@@ -77,6 +77,9 @@ exports.addComment = function(req,res) {
 
 	res.render('consultStory',
 		   storyView, function(err,stuff) {
+			   if(err) {
+				   console.log(err);
+			   }
 			   if(!err) {
 				   res.write(stuff);
 				   res.end();
@@ -155,6 +158,33 @@ exports.validateComments = function(req,res) {
 			   }
 		   });
 
+}
+exports.searchPrepareForm = function(req,res) {
+	var view = usersController.addConnexionView(req,{});
+	res.render('searchStory',
+		   view, function(err,stuff) {
+			   if(err) {
+			   	console.log(err);
+			   }
+			   if(!err) {
+				   res.write(stuff);
+				   res.end();
+			   }
+		   });
+}
+exports.search = function(req,res) {
+	var stories = model.getRecentStories();
+	usersController.addConnexionView(req,stories);
+	res.render('searchStory',
+		   stories, function(err,stuff) {
+			   if(err) {
+			   	console.log(err);
+			   }
+			   if(!err) {
+				   res.write(stuff);
+				   res.end();
+			   }
+		   });
 }
 
 function storyModel2storyView(aStory) {

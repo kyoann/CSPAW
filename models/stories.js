@@ -31,12 +31,12 @@ exports.newSpecialistOpinion = function(userId,storyId,specialistOpinionText) {
 	return story;
 };
 	
-exports.addComment = function (userId,storyId,commentId,text) {
+exports.addComment = function (username,storyId,commentId,text) {
 	console.log('adding comment '+commentId);
 	var story = exports.getStory(storyId);
 	story.version++;
 	story.commentsToValidate++;
-	var comment = new model.comment(story.version,"Patricia","20131215",text);
+	var comment = new model.comment(story.version,username,new Date(),text);
 
 	if(commentId.length === 0) {
 		console.log("comment root:"+baseComment);
@@ -181,4 +181,7 @@ function commentsIterator(aComments, aFunction) {
 		commentsIterator(aComments[i].comments, aFunction);
 		aFunction(aComments[i]);
 	}
+}
+exports.getRecentStories = function() {
+	return {stories:stories};
 }

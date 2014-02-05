@@ -19,7 +19,7 @@ exports.create = function(req,res) {
 	user.stories = [];
 
 	user.connexion = {};	
-	user.connexion.username = user.username;
+	user.connexion.user= user;
 
 	res.render('consultProfil',
 			user, function(err,stuff) {
@@ -49,7 +49,7 @@ exports.consult = function(req,res) {
 	var user = model.findByUsername(username, function(err,user) {
 		if(!err) {
 			user.connexion = {};	
-			user.connexion.username = user.username;
+			user.connexion.user = user;
 
 			storiesModel.getUserStories(user.id, function(err,userStories) {
 				if(!err) {
@@ -71,8 +71,9 @@ exports.consult = function(req,res) {
 exports.addConnexionView = function(aReq,aView) {
 	aView.connexion = {};	
 	if(aReq.user) {
-		aView.connexion.username = aReq.user.username;
+		aView.connexion.user = aReq.user;
 	}
-	console.log(JSON.stringify(aView));
+	//console.log(JSON.stringify(aView));
 };
+
 

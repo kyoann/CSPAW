@@ -33,7 +33,7 @@ exports.specialistOpinion = function(id,author,creationDate,text) {
 	this.state = 'toBeValidated';
 }
 
-exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,studies,stories) {
+exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,studies,stories,profil) {
 	this.id = id;
 	this.username= username;
 	this.password = password;
@@ -43,4 +43,5 @@ exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,
 	this.gender = gender;
 	this.studies = studies;
 	this.stories = stories;
+	this.profil = profil;
 }

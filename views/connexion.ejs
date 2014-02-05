@@ -5,39 +5,39 @@ Connexion
 </div>
 
 <div class='connexion'>
-<% if(!connexion.username) { %>
-	<% if (connexion.message) { %>
-		<p><%= connexion.message %></p>
-			<% } %>
-			<script type="text/ecmascript">
-			function connect() {
-				var connexionForm = document.getElementById("connexionForm");
-				connexionForm.submit();	
-			}
-			function createProfil() {
-				
-			}
+<% if(connexion.user) { %>
+	<script type="text/ecmascript">
+		function logout() {
+			var logoutForm = document.getElementById("logoutForm");
+			logoutForm.submit();	
+		}
 	</script>
-		<form style='display:inline;' id='connexionForm' method='POST' action='/login' enctype='application/x-www-form-urlencoded'>
-		<input type='text' id='username' name='username'/>
-		<input type='password' id='password' name='password'/>
-		<a onclick='connect()' style='cursor:pointer;font-style:bold'>Se connecter</a>
-
+		<div style='display:inline;' ><%=connexion.user.username%></div>
+		<a href='/users/consult/<%=connexion.user.username%>'>Ma page</a>
+		<form style='display:inline;' id='logoutForm' method='POST' action='/logout' enctype='application/x-www-form-urlencoded'>
+		<a onclick='logout()' style='cursor:pointer;font-style:bold'> Se d&eacute;connecter </a>
 		</form>
-		<a href='/users/new' style='cursor:pointer;font-style:bold' >Cr&eacute;er un profil</a>
-
 		<% } else { %>
-			<script type="text/ecmascript">
-				function logout() {
-					var logoutForm = document.getElementById("logoutForm");
-					logoutForm.submit();	
-				}
+			<% if (connexion.message) { %>
+				<p><%= connexion.message %></p>
+					<% } %>
+					<script type="text/ecmascript">
+					function connect() {
+						var connexionForm = document.getElementById("connexionForm");
+						connexionForm.submit();	
+					}
+			function createProfil() {
+
+			}
 			</script>
-				<div style='display:inline;' ><%=connexion.username%></div>
-				<a href='/users/consult/<%=connexion.username%>'>Ma page</a>
-				<form style='display:inline;' id='logoutForm' method='POST' action='/logout' enctype='application/x-www-form-urlencoded'>
-				<a onclick='logout()' style='cursor:pointer;font-style:bold'> Se d&eacute;connecter </a>
+				<form style='display:inline;' id='connexionForm' method='POST' action='/login' enctype='application/x-www-form-urlencoded'>
+				<input type='text' id='username' name='username'/>
+				<input type='password' id='password' name='password'/>
+				<a onclick='connect()' style='cursor:pointer;font-style:bold'>Se connecter</a>
+
 				</form>
+				<a href='/users/new' style='cursor:pointer;font-style:bold' >Cr&eacute;er un profil</a>
+
 				<% }%>
 				</div>
 				</div>

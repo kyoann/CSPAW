@@ -67,6 +67,8 @@ app.configure(function() {
 	app.put('/stories/validate', storiesController.validateStory);
 	app.get('/stories/consult/:storyId', storiesController.consult);
 	app.put('/stories/newSpecialistOpinion', storiesController.newSpecialistOpinion);
+	app.get('/stories/search', storiesController.searchPrepareForm);
+	app.post('/stories/search', storiesController.search);
 
 	var usersController = require('./controllers/users');
 	app.get('/users/new', usersController.new);
