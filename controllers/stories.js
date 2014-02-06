@@ -160,7 +160,8 @@ exports.validateComments = function(req,res) {
 
 }
 exports.searchPrepareForm = function(req,res) {
-	var view = usersController.addConnexionView(req,{});
+	var view = {stories:[]};
+	usersController.addConnexionView(req,view);
 	res.render('searchStory',
 		   view, function(err,stuff) {
 			   if(err) {
@@ -173,6 +174,7 @@ exports.searchPrepareForm = function(req,res) {
 		   });
 }
 exports.search = function(req,res) {
+	debugger;
 	var stories = model.getRecentStories();
 	usersController.addConnexionView(req,stories);
 	res.render('searchStory',
