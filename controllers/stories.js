@@ -21,6 +21,9 @@ exports.consult = function(req,res) {
 				   res.end();
 			   }
 		   });
+		   if(req.user && req.user.username == story.username) {
+			   model.deleteStoryCommentedEvents(story);
+		   }
 };
 exports.new = function(req,res) {
 	var view = {};
@@ -40,24 +43,24 @@ exports.create = function(req,res) {
 	console.log('creating '+req.body.title+" "+model.createStory);
 	var user = usersModel.findByUsername(req.user.username,function(err,user) {
 		if(!err) {
-		var story = model.createStory(user.id,user.username,new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
+			var story = model.createStory(user.id,user.username,new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
 
-		var storyView = storyModel2storyView(story);
-		usersController.addConnexionView(req,storyView);
+			var storyView = storyModel2storyView(story);
+			usersController.addConnexionView(req,storyView);
 
-		//TODO
-		storyView.canBeValidated = false;
-		if(story.state == 'new') {
-			storyView.canBeValidated = true;
-		}
+			//TODO
+			storyView.canBeValidated = false;
+			if(story.state == 'new') {
+				storyView.canBeValidated = true;
+			}
 
-		res.render('consultStory',
-			   storyView, function(err,stuff) {
-				   if(!err) {
-					   res.write(stuff);
-					   res.end();
-				   }
-			   });
+			res.render('consultStory',
+				   storyView, function(err,stuff) {
+					   if(!err) {
+						   res.write(stuff);
+						   res.end();
+					   }
+				   });
 		}
 	});
 
@@ -69,7 +72,11 @@ exports.addComment = function(req,res) {
 	var comment = req.body.commentText;
 	console.log(model.addComment);
 	var user = req.user;
+	var storyUsername = req.body.storyUsername;
+	var currentDate = new Date();
 	var story = model.addComment(user.username,storyId,commentId,comment);
+	usersController.addUserEventStoryCommented(storyUsername,story.id,comment,user.username,currentDate);
+
 	var storyView = storyModel2storyView(story);
 	usersController.addConnexionView(req,storyView);
 
@@ -165,7 +172,7 @@ exports.searchPrepareForm = function(req,res) {
 	res.render('searchStory',
 		   view, function(err,stuff) {
 			   if(err) {
-			   	console.log(err);
+				   console.log(err);
 			   }
 			   if(!err) {
 				   res.write(stuff);
@@ -180,7 +187,7 @@ exports.search = function(req,res) {
 	res.render('searchStory',
 		   stories, function(err,stuff) {
 			   if(err) {
-			   	console.log(err);
+				   console.log(err);
 			   }
 			   if(!err) {
 				   res.write(stuff);

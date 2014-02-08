@@ -278,6 +278,7 @@ if(canBeValidated == true) {
 	<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
 	<input type='hidden' id='commentId' name='commentId'/>
 	<input type='hidden' id='commentText' name='commentText'/>
+	<input type='hidden' id='storyUsername' name='storyUsername' value='<%=author%>'/>
 </form>
 <form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
 	<input type='hidden' value='put' name='_method'/>

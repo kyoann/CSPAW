@@ -1,77 +1,64 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	<title>Consulter le profil de <%= id %></title>
-		<link rel='stylesheet' type='text/css' href='/style.css' />
-	</head>
-	<body>
-		<% include connexion%>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Mes informations
-			</div>
-			<div class='info'>
-				<%= username %>
-			</div>
-			<div class='info'>
-				<%= age %>
-			</div>
-			<div class='info'>
-				<%= gender %>
-			</div>
-			<div class='info'>
-				<%= studies %>
-			</div>
-			<div class='info'>
-				<%= hierarchyLevel %>
-			</div>
-			<div class='info'>
-				<%= activity %>
-			</div>
+<head>
+<title>Consulter le profil de <%= id %></title>
+<link rel='stylesheet' type='text/css' href='/style.css' />
+</head>
+<body>
+<% include connexion%>
+<div class='structureElement'>
+	<div class='structureName'>
+		Mes informations
+	</div>
+	<div class='info'>
+		<%= username %>
+	</div>
+	<div class='info'>
+		<%= age %>
+	</div>
+	<div class='info'>
+		<%= gender %>
+	</div>
+	<div class='info'>
+		<%= studies %>
+	</div>
+	<div class='info'>
+		<%= hierarchyLevel %>
+	</div>
+	<div class='info'>
+		<%= activity %>
+	</div>
+</div>
+<div class='structureElement'>
+	<div class='structureName'>
+		Mes histoires
+	</div>
+	<div>
+		<%
+		var formatDate = function(aDate) {
+		var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
+		return result;
+		};
+		for(var i = 0 ; i < stories.length ; i++) {
+		%>
+		<div class='storyTitle'>
+			<a href="/stories/consult/<%=stories[i].id%>"><%= stories[i].title%></a>
 		</div>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Mes histoires
-			</div>
-			<div>
-				<%
-				var formatDate = function(aDate) {
-				var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
-				return result;
-				};
-				for(var i = 0 ; i < stories.length ; i++) {
-				%>
-				<div class='storyTitle'>
-					<a href="/stories/consult/<%=stories[i].id%>"><%= stories[i].title%></a>
-				</div>
-				<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= stories[i].username%></div>
-				<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(stories[i].creationDate)%></div>
-				<%
-				}
-				%>
-			</div>
-		</div>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Derni&egrave;res histoires consult&eacute;es
-			</div>
-			<div class='story'>Histoire 1</div>
-			<div class='story'>Histoire 2</div>
-			<div class='story'>Histoire 3</div>
-		</div>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Derni&egrave;res r&eacute;actions &agrave; mes commentaires
-			</div>
-			<div class='story'>Histoire 1</div>
-			<div class='comment'>
-				<div class='commentMeta'>Moi&nbsp;</div>
-				Cette attitude va &agrave; l'encontre m&ecirc;me du principe d'organisation.
-			</div>
-			<div class='comment' style='margin-left:20px'>
-				<div class='commentMeta'>Catherine&nbsp;</div>
-				Il vaut mieux juste aider les autres &agrave; faire leur travail
-			</div>
-		</div>
-		</body>
-		</html>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= stories[i].username%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(stories[i].creationDate)%></div>
+		<%
+		var recentComments = stories[i].recentComments;
+		for(var j = 0 ; j < recentComments.length ; j++) {
+			var recentComment = recentComments[i];
+		%>
+		<div style='margin-left:20px'><%=recentComment.commentUsername%>, le <%= formatDate(recentComment.creationDate)%> : <%=recentComment.comment%> </div>
+		<%
+		}
+		%>
+		<%
+		}
+		%>
+	</div>
+</div>
+</body>
+</html>

@@ -45,27 +45,42 @@ exports.logout = function(req,res) {
 	res.redirect('/');
 };
 exports.consult = function(req,res) {
-	var username = req.params.username;
-	var user = model.findByUsername(username, function(err,user) {
-		if(!err) {
-			user.connexion = {};	
-			user.connexion.user = user;
+	renderConsultProfil(req.user,res);
+};
+function renderConsultProfil(user,res) {
+	user.connexion = {};	
+	user.connexion.user = user;
 
-			storiesModel.getUserStories(user.id, function(err,userStories) {
-				if(!err) {
-					user.stories = userStories;
-					res.render('consultProfil',
-						   user, function(err,stuff) {
-							   if(!err) {
-								   res.write(stuff);
-								   res.end();
-							   }
-						   });
-				}
+	storiesModel.getUserStories(user.id, function(err,userStories) {
+		if(!err) {
+			user.stories = userStories;
+			model.getUserEventsStoriesCommented(user.username,function(err,events) {
+				addEventsToStory(userStories,events);
+				res.render('consultProfil',
+					   user, function(err,stuff) {
+						   if(!err) {
+							   res.write(stuff);
+							   res.end();
+						   }
+						   else {
+							   console.log(err);
+						   }
+					   });
 			});
 		}
 	});
-};
+}
+
+function addEventsToStory(stories,events) {
+	for(var i = 0,l=stories.length;i < l;i++) {
+		stories[i].recentComments = [];
+		for(var j=0,m=events.length;j < m;j++){
+			if(stories[i].id == events[j].storyid){
+				stories[i].recentComments.push(events[j]);
+			}
+		}
+	}
+}
 
 
 exports.addConnexionView = function(aReq,aView) {
@@ -75,5 +90,9 @@ exports.addConnexionView = function(aReq,aView) {
 	}
 	//console.log(JSON.stringify(aView));
 };
+
+exports.addUserEventStoryCommented = function(username,storyid,comment,commentUsername,creationDate) {
+	model.addUserEventStoryCommented(username,storyid,comment,commentUsername,creationDate); 
+}
 
 

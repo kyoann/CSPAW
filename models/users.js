@@ -33,3 +33,19 @@ exports.findByUsername = function(username, fn) {
 	}
 	return fn(null, null);
 }
+
+var storyCommentedEvents = [];
+
+exports.addUserEventStoryCommented = function(username,storyid,comment,commentUsername,creationDate) {
+	var event = new model.storyCommentedEvent(username,storyid,comment,commentUsername,creationDate); 
+	storyCommentedEvents.push(event);
+}
+exports.getUserEventsStoriesCommented = function(username,done) {
+	var events = [];
+	for(var i = 0;i<storyCommentedEvents.length;i++){
+		if(storyCommentedEvents[i].username === username) {
+			events.push(storyCommentedEvents[i]);
+		}
+	}
+	done(null,events);
+}

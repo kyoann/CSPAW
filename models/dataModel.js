@@ -44,4 +44,14 @@ exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,
 	this.studies = studies;
 	this.stories = stories;
 	this.profil = profil;
-}
+};
+
+exports.storyCommentedEvent = function(username,storyid,comment,commentUsername,creationDate) {
+	return {
+		username:username,
+		storyid:storyid,
+		comment:comment,
+		commentUsername:commentUsername,
+		creationDate:creationDate
+	}
+};
