@@ -41,13 +41,21 @@ exports.new = function(req,res) {
 /*
  * comments : id, storyId, author, creationDate, text, responses
  */
+function urlDecodeWTF(e) {
+	var d = e.replace("+"," ");
+	d = unescape(d);
+	return d;
+
+}
 
 exports.create = function(req,res) {
-	console.log('creating '+req.body.title+" "+model.createStory);
 	var user = usersModel.findByUsername(req.user.username,function(err,user) {
 		if(!err) {
-			var story = model.createStory(user.id,user.username,new Date(),req.body.title,req.body.facts,req.body.feelings,req.body.problem);
-
+			console.log(req.body.facts);
+			var facts = urlDecodeWTF(req.body.facts);
+			console.log(facts);
+			var story = model.createStory(user.id,user.username,new Date(),req.body.title,facts,req.body.feelings,req.body.problem);
+			console.log(JSON.stringify(story));
 			var storyView = storyModel2storyView(story);
 			usersController.addConnexionView(req,storyView);
 
@@ -233,13 +241,18 @@ exports.search = function(req,res) {
 	});
 }
 
+function formatString(s) {
+	var f = s.replace('\r\n','<br>');
+	return f;
+}
+
 function storyModel2storyView(aStory) {
 	return {
 		storyId:aStory.id,
-		title:aStory.title,
-		facts:aStory.facts,
-		feelings:aStory.feelings,
-		problem:aStory.problem,
+		title:formatString(aStory.title),
+		facts:formatString(aStory.facts),
+		feelings:formatString(aStory.feelings),
+		problem:formatString(aStory.problem),
 		comments:aStory.comments,
 		specialistsOpinions:aStory.specialistsOpinions,
 		author:aStory.username,

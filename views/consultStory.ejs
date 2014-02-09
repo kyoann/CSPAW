@@ -28,6 +28,7 @@ return false;
 <html>
 
 <head>
+<meta charset="UTF-8">
 <title>Consulter une histoire</title>
 <link rel='stylesheet' type='text/css' href='/style.css' />
 <script src="/jquery-1.10.2.js"></script>
@@ -140,10 +141,10 @@ if(canBeValidated == true) {
 	</div>
 	<% } %>
 	<div class='storyFacts structureElement'>
-		<div class='structureName'>Faits</div><%= facts %>
+		<div class='structureName'>Faits</div><%- facts %>
 	</div>
-	<div class='storyFeelings structureElement'><div class='structureName'>Ressenti</div><%= feelings %></div>
-	<div class='storyProblem structureElement'><div class='structureName'>Probl&egrave;me</div><%= problem %></div>
+	<div class='storyFeelings structureElement'><div class='structureName'>Ressenti</div><%- feelings %></div>
+	<div class='storyProblem structureElement'><div class='structureName'>Probl&egrave;me</div><%- problem %></div>
 	<div id='themes' class='structureElement'>
 		<div class='structureName'>
 			Th&egrave;mes abord&eacute;s
@@ -156,15 +157,15 @@ if(canBeValidated == true) {
 		}
 		%>
 		<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
-		<div class='theme selected' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
+		<div class='theme' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
 		<div class='theme' <%=onclick%>>Probl&egrave;me avec un subalterne</div>
 		<div class='theme' <%=onclick%>>R&eacute;mun&eacute;ration</div>
 		<div class='theme' <%=onclick%>>Cong&eacute;s</div>
 		<div class='theme' <%=onclick%>>Amour / Sexe</div>
-		<div class='theme selected' <%=onclick%>>Management</div>
-		<div class='theme selected' <%=onclick%>>Nouveau poste</div>
+		<div class='theme' <%=onclick%>>Management</div>
+		<div class='theme' <%=onclick%>>Nouveau poste</div>
 		<div class='theme' <%=onclick%>>Licenciement / reclassement</div>
-		<div class='theme selected' <%=onclick%>>Ambiance</div>
+		<div class='theme' <%=onclick%>>Ambiance</div>
 	</div>
 </div>
 <% if(canBeValidated == true) {%>
@@ -268,7 +269,7 @@ if(canBeValidated == true) {
 		</div>
 	</div>
 	<div>
-		<div>Mod&eacute;rer les commentaires
+		<div style='text-align:right'>Mod&eacute;rer les commentaires
 			<button onclick='moderateComments()'>&rarr;</button>
 		</div>
 	</div>
