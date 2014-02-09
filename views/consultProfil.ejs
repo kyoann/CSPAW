@@ -35,26 +35,36 @@
 	</div>
 	<div>
 		<%
-		var formatDate = function(aDate) {
-		var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getYear();
-		return result;
-		};
 		for(var i = 0 ; i < stories.length ; i++) {
 		%>
 		<div class='storyTitle'>
 			<a href="/stories/consult/<%=stories[i].id%>"><%= stories[i].title%></a>
 		</div>
 		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= stories[i].username%></div>
-		<div class='storyDate' style='display:inline;'>&agrave; <%= formatDate(stories[i].creationDate)%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= utilities.formatDate(stories[i].creationDate)%></div>
 		<%
 		var recentComments = stories[i].recentComments;
 		for(var j = 0 ; j < recentComments.length ; j++) {
-			var recentComment = recentComments[i];
+		var recentComment = recentComments[i];
 		%>
-		<div style='margin-left:20px'><%=recentComment.commentUsername%>, le <%= formatDate(recentComment.creationDate)%> : <%=recentComment.comment%> </div>
+		<div style='margin-left:20px'><%=recentComment.commentUsername%>, le <%= utilities.formatDate(recentComment.creationDate)%> : <%=recentComment.comment%> </div>
 		<%
 		}
 		%>
+		<%
+		}
+		%>
+	</div>
+</div>
+<div class='structureElement'>
+	<div class='structureName'>
+		R&eacute;actions &agrave; mes commentaires	
+	</div>
+	<div>
+		<%
+		for(var i = 0 ; i < commentsCommented.length ; i++) {
+		%>
+		A propos de <a href="/stories/consult/<%=commentsCommented[i].storyId%>"><%= commentsCommented[i].storyTitle%></a> vous avez &eacute;crit "<%=commentsCommented[i].commentedComment%>" et <%=commentsCommented[i].commentingCommentUsername%> a r&eacute;agit "<%=commentsCommented[i].commentingComment%>" le <%=utilities.formatDate(commentsCommented[i].creationDate)%>.
 		<%
 		}
 		%>

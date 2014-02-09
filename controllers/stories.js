@@ -22,7 +22,10 @@ exports.consult = function(req,res) {
 			   }
 		   });
 		   if(req.user && req.user.username == story.username) {
-			   model.deleteStoryCommentedEvents(story);
+			   usersController.deleteStoryCommentedEvents(story);
+		   }
+		   if(req.user) {
+		   	usersController.deleteCommentCommentedEvents(story.id,req.user.username);
 		   }
 };
 exports.new = function(req,res) {
@@ -70,12 +73,32 @@ exports.addComment = function(req,res) {
 	var storyId = req.body.storyId;
 	var commentId = req.body.commentId;
 	var comment = req.body.commentText;
-	console.log(model.addComment);
 	var user = req.user;
 	var storyUsername = req.body.storyUsername;
 	var currentDate = new Date();
-	var story = model.addComment(user.username,storyId,commentId,comment);
+	var story = model.getStory(storyId);
+	story.version++;
+	story.commentsToValidate++;
+	var comment = model.newComment(story.version,user.username,new Date(),comment);
+	var baseComment; 
+	if(commentId.length === 0) {
+		story.comments.push(comment);
+		comment.level = 0;
+	}
+	else {
+		baseComment = findComment(commentId,story.comments);
+		if(baseComment === undefined) {
+			//TODO throw exception
+		}
+		baseComment.comments.push(comment);
+		comment.level = baseComment.level + 1;
+	}
+	model.updateStory(story,function(err){});
+
 	usersController.addUserEventStoryCommented(storyUsername,story.id,comment,user.username,currentDate);
+	if(baseComment) {
+		usersController.addUserEventCommentCommented(story.title,story.id,baseComment.author,comment.author,baseComment.text,comment.text,currentDate);
+	}
 
 	var storyView = storyModel2storyView(story);
 	usersController.addConnexionView(req,storyView);
@@ -94,6 +117,20 @@ exports.addComment = function(req,res) {
 		   });
 
 		   //res.redirect('/stories/consult');
+};
+function findComment(aCommentId,aComments) {
+	for(var i = 0 ; i < aComments.length ; i++) {
+		if(aComments[i].id == aCommentId ) {
+			return aComments[i];
+		}	
+		else {
+			var comment = findComment(aCommentId,aComments[i].comments);
+			if(comment != undefined) {
+				return comment;
+			}
+		}
+	}
+	return undefined;
 };
 exports.newSpecialistOpinion = function(req,res) {
 	console.log("Hello");
@@ -181,19 +218,19 @@ exports.searchPrepareForm = function(req,res) {
 		   });
 }
 exports.search = function(req,res) {
-	debugger;
-	var stories = model.getRecentStories();
-	usersController.addConnexionView(req,stories);
-	res.render('searchStory',
-		   stories, function(err,stuff) {
-			   if(err) {
-				   console.log(err);
-			   }
-			   if(!err) {
-				   res.write(stuff);
-				   res.end();
-			   }
-		   });
+	model.getRecentStories(function(err,stories) {
+		usersController.addConnexionView(req,stories);
+		res.render('searchStory',
+			   stories, function(err,stuff) {
+				   if(err) {
+					   console.log(err);
+				   }
+				   if(!err) {
+					   res.write(stuff);
+					   res.end();
+				   }
+			   });
+	});
 }
 
 function storyModel2storyView(aStory) {

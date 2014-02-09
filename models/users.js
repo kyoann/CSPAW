@@ -35,6 +35,7 @@ exports.findByUsername = function(username, fn) {
 }
 
 var storyCommentedEvents = [];
+var commentCommentedEvents = [];
 
 exports.addUserEventStoryCommented = function(username,storyid,comment,commentUsername,creationDate) {
 	var event = new model.storyCommentedEvent(username,storyid,comment,commentUsername,creationDate); 
@@ -48,4 +49,33 @@ exports.getUserEventsStoriesCommented = function(username,done) {
 		}
 	}
 	done(null,events);
+}
+exports.deleteStoryCommentedEvents = function(story) {
+	for(var i = 0;i<storyCommentedEvents.length;i++){
+		if(storyCommentedEvents[i].username === story.username) {
+			storyCommentedEvents.splice(i,1);
+		}
+	}
+}
+exports.addUserEventCommentCommented = function(storyTitle,storyId,commentedCommentUsername,commentingCommentUsername,commentedComment,commentingComment,creationDate) {
+	var event = new model.commentCommentedEvent(storyTitle,storyId,commentedCommentUsername,commentingCommentUsername,commentedComment,commentingComment,creationDate); 
+	commentCommentedEvents.push(event);
+}
+exports.getUserEventsCommentsCommented = function(username,done) {
+debugger;
+	var events = [];
+	console.log(commentCommentedEvents);
+	for(var i = 0;i<commentCommentedEvents.length;i++){
+		if(commentCommentedEvents[i].commentedCommentUsername === username) {
+			events.push(commentCommentedEvents[i]);
+		}
+	}
+	done(null,events);
+}
+exports.deleteCommentCommentedEvents = function(storyId,username) {
+	for(var i = 0;i<commentCommentedEvents.length;i++){
+		if(commentCommentedEvents[i].storyId === storyId && commentCommentedEvents[i].commentedCommentUsername === username) {
+			commentCommentedEvents.splice(i,1);
+		}
+	}
 }

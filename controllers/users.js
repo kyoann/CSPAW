@@ -50,22 +50,26 @@ exports.consult = function(req,res) {
 function renderConsultProfil(user,res) {
 	user.connexion = {};	
 	user.connexion.user = user;
+	user.utilities = require('../views/utilities');
 
 	storiesModel.getUserStories(user.id, function(err,userStories) {
 		if(!err) {
 			user.stories = userStories;
 			model.getUserEventsStoriesCommented(user.username,function(err,events) {
 				addEventsToStory(userStories,events);
-				res.render('consultProfil',
-					   user, function(err,stuff) {
-						   if(!err) {
-							   res.write(stuff);
-							   res.end();
-						   }
-						   else {
-							   console.log(err);
-						   }
-					   });
+				model.getUserEventsCommentsCommented(user.username,function(err,commentsCommented){
+					user.commentsCommented=commentsCommented;
+					res.render('consultProfil',
+						   user, function(err,stuff) {
+							   if(!err) {
+								   res.write(stuff);
+								   res.end();
+							   }
+							   else {
+								   console.log(err);
+							   }
+						   });
+				});
 			});
 		}
 	});
@@ -95,4 +99,13 @@ exports.addUserEventStoryCommented = function(username,storyid,comment,commentUs
 	model.addUserEventStoryCommented(username,storyid,comment,commentUsername,creationDate); 
 }
 
-
+exports.deleteStoryCommentedEvents = function(story) {
+	model.deleteStoryCommentedEvents(story);
+}
+exports.addUserEventCommentCommented = function(storyTitle,storyId,commentedCommentUsername,commentingCommentUsername,commentedComment,commentingComment,creationDate) {
+	debugger;
+	model.addUserEventCommentCommented(storyTitle,storyId,commentedCommentUsername,commentingCommentUsername,commentedComment,commentingComment,creationDate); 
+}
+exports.deleteCommentCommentedEvents = function(storyId,username) {
+	model.deleteCommentCommentedEvents(storyId,username);
+}

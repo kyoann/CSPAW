@@ -30,46 +30,13 @@ exports.newSpecialistOpinion = function(userId,storyId,specialistOpinionText) {
 
 	return story;
 };
-	
-exports.addComment = function (username,storyId,commentId,text) {
-	console.log('adding comment '+commentId);
-	var story = exports.getStory(storyId);
-	story.version++;
-	story.commentsToValidate++;
-	var comment = new model.comment(story.version,username,new Date(),text);
-
-	if(commentId.length === 0) {
-		console.log("comment root:"+baseComment);
-		story.comments.push(comment);
-		comment.level = 0;
-	}
-	else {
-		var baseComment = findComment(commentId,story.comments);
-		if(baseComment === undefined) {
-			//TODO throw exception
-		}
-		baseComment.comments.push(comment);
-		comment.level = baseComment.level + 1;
-	}
-
-	console.log(story);
-	return story;
+exports.newComment = function(version,username,date,text) {
+	return new model.comment(version,username,date,text);
 };
-function findComment(aCommentId,aComments) {
-	for(var i = 0 ; i < aComments.length ; i++) {
-		console.log("comparing "+aComments[i].id+" with "+aCommentId);
-		if(aComments[i].id == aCommentId ) {
-			return aComments[i];
-		}	
-		else {
-			var comment = findComment(aCommentId,aComments[i].comments);
-			if(comment != undefined) {
-				return comment;
-			}
-		}
-	}
-	return undefined;
-};
+exports.updateStory = function(story,done) {
+	done(null);
+}
+
 
 exports.getNewStories = function() {
 	var newStories = [];
@@ -182,6 +149,6 @@ function commentsIterator(aComments, aFunction) {
 		aFunction(aComments[i]);
 	}
 }
-exports.getRecentStories = function() {
-	return {stories:stories};
+exports.getRecentStories = function(done) {
+	done(null,{stories:stories});
 }

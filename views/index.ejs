@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<title><%= title %></title>
-		<link rel='stylesheet' type='text/css' href='/style.css'/>
-	</head>
+<head>
+<title><%= title %></title>
+<link rel='stylesheet' type='text/css' href='/style.css'/>
+</head>
 
-	<body>
-		<% include connexion%>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Accueil
-			</div>
-			<div id='intro'>Ce site a pour objectif de vous permettre de partager des probl&egrave;mes humains dans le cadre d'une activit&eacute; professionnelle et de b&eacute;n&eacute;ficier d'un soutien moral et de clefs de compr&eacute;hension.</div>
-			<div id='actions'>
-				<a href='/stories/search'>Rechercher une histoire</a>
-				<a href='/stories/new'>Raconter une histoire</a>
-				<a href='/stories/moderate'>Mod&eacute;rer les histoires</a>
-			</div>
+<body>
+<% include connexion%>
+<div class='structureElement'>
+	<div class='structureName'>
+		Accueil
+	</div>
+	<div id='intro'>Ce site a pour objectif de vous permettre de partager des probl&egrave;mes humains dans le cadre d'une activit&eacute; professionnelle et de b&eacute;n&eacute;ficier d'un soutien moral et de clefs de compr&eacute;hension.</div>
+	<div id='actions'>
+		<a href='/stories/search'>Rechercher une histoire</a>
+		<a href='/stories/new'>Raconter une histoire</a>
+		<a href='/stories/moderate'>Mod&eacute;rer les histoires</a>
+	</div>
+</div>
+<div class='structureElement'>
+	<div class='structureName'>
+		Histoires r&eacute;centes
+	</div>
+	<div>
+		<%
+		for(var i = 0 ; i < recentStories.length ; i++) {
+		%>
+		<div class='storyTitle'>
+			<a href="/stories/consult/<%=recentStories[i].id%>"><%= recentStories[i].title%></a>
 		</div>
-		<div class='structureElement'>
-			<div class='structureName'>
-				Actualit&eacute;s
-			</div>
-			<div id='events'>
-				Histoires r&eacute;cemment ajout&eacute;e :<br/>
-				<div class='story'>Histoire 1</div>
-				<div class='story'>Histoire 2</div>
-				<div class='story'>Histoire 3</div>
-			</div>
-		</div>
-	</body>
+		<div class='storyAuthor' style='display:inline;'>R&eacute;dig&eacute; par <%= recentStories[i].username%></div>
+		<div class='storyDate' style='display:inline;'>&agrave; <%= utilities.formatDate(recentStories[i].creationDate)%></div>
+		<%
+		}
+		%>
+	</div>
+</div>
+</body>
 
 </html>

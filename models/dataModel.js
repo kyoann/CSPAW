@@ -55,3 +55,16 @@ exports.storyCommentedEvent = function(username,storyid,comment,commentUsername,
 		creationDate:creationDate
 	}
 };
+
+exports.commentCommentedEvent = function(storyTitle,storyId,commentedCommentUsername,commentingCommentUsername,commentedComment,commentingComment,creationDate) {
+	return {
+		username:commentedCommentUsername,
+		storyTitle:storyTitle,
+		storyId:storyId,
+		commentedCommentUsername:commentedCommentUsername,
+		commentingCommentUsername:commentingCommentUsername,
+		commentedComment:commentedComment,
+		commentingComment:commentingComment,
+		creationDate:creationDate
+	}
+};
