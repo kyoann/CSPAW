@@ -1,3 +1,29 @@
+<%
+function isUser(user) {
+for(var i = 0; i<user.profil.length;i++) {
+if(user.profil[i] === 'user') {
+return true;
+}
+}
+return false;
+};
+function isModerator(user) {
+for(var i = 0; i<connexion.user.profil.length;i++) {
+if(user.profil[i] === 'moderator') {
+return true;
+}
+}
+return false;
+};
+function isSpecialist (user) {
+for(var i = 0; i<connexion.user.profil.length;i++) {
+if(user.profil[i] === 'specialist') {
+return true;
+}
+}
+return false;
+};
+%>
 <!DOCTYPE html>
 <html>
 
@@ -5,22 +31,6 @@
 <meta charset="UTF-8">
 <title>Consulter une histoire</title>
 <link rel='stylesheet' type='text/css' href='/style.css' />
-<style type='text/css'>
-.switchOn {
-	display:inline-block;
-	cursor:normal;
-	font-style:normal;
-	color:#000000;
-	font-weitght:bold;
-}
-.switchOff {
-	display:inline-block;
-	cursor:pointer;
-	font-style:italic;
-	color:#777777;
-	font-weitght:normal;
-}
-</style>
 <script src="/jquery-1.10.2.js"></script>
 <script type='text/javascript'>
 function newSpecialistOpinion() {
@@ -123,12 +133,9 @@ if(canBeValidated == true) {
 		<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
 		<input type='text' id='storyTitle' name='storyTitle' value='<%= title %>'/>
 		<%
-		var actionValue = 'publish';
-		if(state === 'new') {
-		actionValue = 'unpublish';
-		} 
+			var actionValue = state === 'new' ? 'publish' : 'unpublish';
 		%>
-		<input type='hidden' id ='action' name='action' value='<%=actionValue%>'>
+		<input type='text' id ='action' name='action' value='<%=actionValue%>'>
 	</form>
 	<% } else { %>
 	<div class='storyTitle structureElement'>
@@ -164,45 +171,24 @@ if(canBeValidated == true) {
 		<div class='theme' <%=onclick%>>Ambiance</div>
 	</div>
 
-	<%
-	if(utilities.isModerator(connexion.user)) {
-	%>
 	<div class='story structureElement'>
 		<div class='structureName'>Publication</div>
-		<div style='text-align:right'>
-			<%
-			var publishDivClass,unpublishDivClass;
-			if(state == 'validated') {
-			publishDivClass='switchOn';	
-			unpublishDivClass='switchOff';
-			}
-			if(state == 'new') {
-			unpublishDivClass='switchOn';
-			publishDivClass='switchOff';
-			}
-			%>
-			<script type='text/javascript'>
-function publish() {
-	document.querySelector('#action').value = 'publish';
-	document.querySelector('#publishDiv').className = 'switchOn';
-	document.querySelector('#unpublishDiv').className = 'switchOff';
-
-}
-function unpublish() {
-	document.querySelector('#action').value = 'unpublish';
-	document.querySelector('#publishDiv').className = 'switchOff';
-	document.querySelector('#unpublishDiv').className = 'switchOn';
-}
-			</script>
-			<div id='publishDiv' class='<%=publishDivClass%>' onclick='publish()'>Publier</div>
-			<div id='unpublishDiv' class='<%=unpublishDivClass%>' onclick='unpublish()'>Refuser publication</div>
-		</div>
+		<%
+		if(utilities.isModerator(connexion.user)) {
+		var label;
+		if(story.state = 'new') {
+		label = 'Publier';
+		}
+		else{
+		label = 'Refuser publication';
+		}
+		%>
+		<input type='button' value='<%=label%>' onclick='$("#validationForm").submit()'/>
+		<%
+		}
+		}
+		%>
 	</div>
-
-	<input type='button' value='Mod&eacute;rer' onclick='$("#validationForm").submit()'/>
-	<%
-	}
-	%>
 </div>
 <div class='specialistOpinionDiv structureElement'>
 	<div class='structureName'>Opinions des sp&eacute;cialistes</div>

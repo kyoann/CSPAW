@@ -64,7 +64,7 @@ app.configure(function() {
 	app.put('/stories/addComment', storiesController.addComment);
 	app.put('/stories/validateComments', storiesController.validateComments);
 	app.get('/stories/moderate', storiesController.moderate);
-	app.put('/stories/validate', storiesController.validateStory);
+	app.post('/stories/validate', storiesController.validateStory);
 	app.get('/stories/consult/:storyId', storiesController.consult);
 	app.put('/stories/newSpecialistOpinion', storiesController.newSpecialistOpinion);
 	app.get('/stories/search', storiesController.searchPrepareForm);

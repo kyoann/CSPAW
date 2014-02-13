@@ -83,9 +83,9 @@ exports.getStory = function(storyId) {
 	}
 };
 
-exports.validateStory = function(storyId,storyTitle) {
+exports.validateStory = function(storyId,storyTitle,storyState) {
 	var story = exports.getStory(storyId);
-	story.state = "validated";
+	story.state = storyState;
 	story.title = storyTitle;
 	return story;
 };
