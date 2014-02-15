@@ -117,29 +117,7 @@ exports.validateComments = function(storyId,commentsStates) {
 		console.log("commentsToValidate:"+story.commentsToValidate);
 	}
 	commentsIterator(story.comments,f);
-	/*
-	   for(var commentId in commentsStates) {
-	   console.log("looking for comment:"+storyId+"/"+commentId);
-	   var comment = findComment(commentId,story.comments);
-	   if(comment == undefined) {
-	   console.log("unfound comment:"+storyId+"/"+commentId);
-	   continue;
-	   }
-	   else {
-	   console.log("found");
-	   }
-	   if(commentsStates[commentId]=='red') {
-	   comment.state = 'refused';
-	   }
-	   if(commentsStates[commentId]=='green') {
-	   comment.state = 'validated';
-	   }
-	   if(commentsStates[commentId]=='blue') {
-	   comment.state = 'toBeValidated';
-	   }
-	   }
-	   return story;
-	   */
+    
 	return story;	
 };
 

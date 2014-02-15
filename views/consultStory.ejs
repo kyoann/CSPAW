@@ -2,323 +2,278 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>Consulter une histoire</title>
-<link rel='stylesheet' type='text/css' href='/style.css' />
-<style type='text/css'>
-.switchOn {
-	display:inline-block;
-	cursor:normal;
-	font-style:normal;
-	color:#000000;
-	font-weitght:bold;
-}
-.switchOff {
-	display:inline-block;
-	cursor:pointer;
-	font-style:italic;
-	color:#777777;
-	font-weitght:normal;
-}
-</style>
-<script src="/jquery-1.10.2.js"></script>
-<script type='text/javascript'>
-function newSpecialistOpinion() {
-	$("#newSpecialistOpinionDiv").css('display','block');
-}
-function addSpecialistOpinion() {
-	var text = $("#newSpecialistOpinionTextArea").val();
-	$("#newSpecialistOpinionText").val(text);
-	$("#newSpecialistOpinionForm").submit();
-}
-function newComment(commentId) {
-	if(commentId == undefined) {
-		$("#newRootCommentDiv").css('display','block');
-	}
-	else {
-		$("#inputCommentDiv"+commentId).css('display','block');
-	}
-}
-function addComment(commentId) {
-	if(commentId == undefined) {
-		var text = $("#inputCommentText").val();
-	}
-	else {
-		var text = $("#inputCommentText"+commentId).val();
-		$("#commentId").val(commentId);
-	}
-	$("#commentText").val(text);
-	$("#commentForm").submit();
-}
-<%
-if(canBeValidated == true) {
-	%>
-		function switchTheme(theme) {
-			if(theme.className == 'theme')
-			{
-				theme.className='theme selected';
-			}
-			else {
-				theme.className='theme';
-			}
-		}
-	var commentsStates = {};
-
-	function switchColor(aColor,aNumber) {
-		commentsStates[aNumber] = aColor;
-		if(aColor == "red") {
-			$("#red"+aNumber).css('font-weight','bold');	
-			$("#red"+aNumber).css('font-style','');	
-			$("#red"+aNumber).css('color','#000000');	
-			$("#green"+aNumber).css('font-weight','');	
-			$("#green"+aNumber).css('font-style','');	
-			$("#green"+aNumber).css('font-style','italic');	
-			$("#green"+aNumber).css('color','#777777');	
-			$("#blue"+aNumber).css('font-weight','');	
-			$("#blue"+aNumber).css('font-style','italic');	
-			$("#blue"+aNumber).css('color','#777777');	
-			//	$("#commentState"+aNumber).val("red");
-		}
-		if(aColor == "green") {
-			$("#red"+aNumber).css('font-weight','');	
-			$("#red"+aNumber).css('font-style','italic');	
-			$("#red"+aNumber).css('color','#777777');	
-			$("#green"+aNumber).css('font-weight','bold');	
-			$("#green"+aNumber).css('font-style','');	
-			$("#green"+aNumber).css('color','#000000');	
-			$("#blue"+aNumber).css('font-weight','');	
-			$("#blue"+aNumber).css('font-style','italic');	
-			$("#blue"+aNumber).css('color','#777777');	
-			//$("#commentState"+aNumber).val("green");
-		}
-		if(aColor == "blue") {
-			$("#red"+aNumber).css('font-weight','');	
-			$("#red"+aNumber).css('font-style','italic');	
-			$("#red"+aNumber).css('color','#777777');	
-			$("#green"+aNumber).css('font-weight','');	
-			$("#green"+aNumber).css('font-style','italic');	
-			$("#green"+aNumber).css('color','#777777');	
-			$("#blue"+aNumber).css('font-weight','bold');	
-			$("#blue"+aNumber).css('font-style','');	
-			$("#blue"+aNumber).css('color','#000000');	
-			//$("#commentState"+aNumber).val("blue");
-		}
-	}
-	function moderateComments() {
-		$("#commentsStates").val(JSON.stringify(commentsStates));
-		$("#commentsValidationForm").submit();
-	}
-	<%	}
-	%>
-</script>
+    <meta charset="UTF-8">
+    <title>Consulter une histoire</title>
+    <link rel='stylesheet' type='text/css' href='/style.css' />
+    <style type='text/css'>
+        .switchOn {
+        	display:inline-block;
+        	cursor:normal;
+        	font-style:normal;
+        	color:#000000;
+        	font-weitght:bold;
+        }
+        .switchOff {
+        	display:inline-block;
+        	cursor:pointer;
+        	font-style:italic;
+        	color:#777777;
+        	font-weitght:normal;
+        }
+    </style>
+    <script src="/jquery-1.10.2.js"></script>
+    <script type='text/javascript'>
+        function newSpecialistOpinion() {
+        	$("#newSpecialistOpinionDiv").css('display','block');
+        }
+        function addSpecialistOpinion() {
+        	var text = $("#newSpecialistOpinionTextArea").val();
+        	$("#newSpecialistOpinionText").val(text);
+        	$("#newSpecialistOpinionForm").submit();
+        }
+        function newComment(commentId) {
+        	if(commentId == undefined) {
+        		$("#newRootCommentDiv").css('display','block');
+        	}
+        	else {
+        		$("#inputCommentDiv"+commentId).css('display','block');
+        	}
+        }
+        function addComment(commentId) {
+        	if(commentId == undefined) {
+        		var text = $("#inputCommentText").val();
+        	}
+        	else {
+        		var text = $("#inputCommentText"+commentId).val();
+        		$("#commentId").val(commentId);
+        	}
+        	$("#commentText").val(text);
+        	$("#commentForm").submit();
+        }
+        <%
+        if(connexion !== undefined && utilities.isModerator(connexion.user)) {
+        	%>
+        		function switchTheme(theme) {
+        			if(theme.className == 'theme')
+        			{
+        				theme.className='theme selected';
+        			}
+        			else {
+        				theme.className='theme';
+        			}
+        		}
+        	var commentsStates = {};
+        
+        	function switchColor(aColor,aNumber) {
+        		commentsStates[aNumber] = aColor;
+        		if(aColor == "red") {
+        			$("#red"+aNumber).css('font-weight','bold');	
+        			$("#red"+aNumber).css('font-style','');	
+        			$("#red"+aNumber).css('color','#000000');	
+        			$("#green"+aNumber).css('font-weight','');	
+        			$("#green"+aNumber).css('font-style','');	
+        			$("#green"+aNumber).css('font-style','italic');	
+        			$("#green"+aNumber).css('color','#777777');	
+        			$("#blue"+aNumber).css('font-weight','');	
+        			$("#blue"+aNumber).css('font-style','italic');	
+        			$("#blue"+aNumber).css('color','#777777');	
+        			//	$("#commentState"+aNumber).val("red");
+        		}
+        		if(aColor == "green") {
+        			$("#red"+aNumber).css('font-weight','');	
+        			$("#red"+aNumber).css('font-style','italic');	
+        			$("#red"+aNumber).css('color','#777777');	
+        			$("#green"+aNumber).css('font-weight','bold');	
+        			$("#green"+aNumber).css('font-style','');	
+        			$("#green"+aNumber).css('color','#000000');	
+        			$("#blue"+aNumber).css('font-weight','');	
+        			$("#blue"+aNumber).css('font-style','italic');	
+        			$("#blue"+aNumber).css('color','#777777');	
+        			//$("#commentState"+aNumber).val("green");
+        		}
+        		if(aColor == "blue") {
+        			$("#red"+aNumber).css('font-weight','');	
+        			$("#red"+aNumber).css('font-style','italic');	
+        			$("#red"+aNumber).css('color','#777777');	
+        			$("#green"+aNumber).css('font-weight','');	
+        			$("#green"+aNumber).css('font-style','italic');	
+        			$("#green"+aNumber).css('color','#777777');	
+        			$("#blue"+aNumber).css('font-weight','bold');	
+        			$("#blue"+aNumber).css('font-style','');	
+        			$("#blue"+aNumber).css('color','#000000');	
+        			//$("#commentState"+aNumber).val("blue");
+        		}
+        	}
+        	function moderateComments() {
+        		$("#commentsStates").val(JSON.stringify(commentsStates));
+        		$("#commentsValidationForm").submit();
+        	}
+        	<%	}
+        	%>
+    </script>
 </head>
 
 <body>
-<% include connexion%>
-<div class='story structureElement'>
-	<div class='structureName'>Histoire</div>
-	<% if(utilities.isModerator(connexion.user)) {%>
+    <% include connexion%>
+        <div class='story structureElement'>
+            <div class='structureName'>Histoire</div>
+            <% if(utilities.isModerator(connexion.user)) { %>
 
-	<form id='validationForm' method='POST' action='/stories/validate' enctype='application/x-www-form-urlencoded'>
-		<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
-		<input type='text' id='storyTitle' name='storyTitle' value='<%= title %>'/>
-		<%
-		var actionValue = 'publish';
-		if(state === 'new') {
-		actionValue = 'unpublish';
-		} 
-		%>
-		<input type='hidden' id ='action' name='action' value='<%=actionValue%>'>
-	</form>
-	<% } else { %>
-	<div class='storyTitle structureElement'>
-		<div class='structureName'>Titre</div>
-		<%= title %>
-	</div>
-	<% } %>
-	<div class='storyFacts structureElement'>
-		<div class='structureName'>Faits</div><%- facts %>
-	</div>
-	<div class='storyFeelings structureElement'><div class='structureName'>Ressenti</div><%- feelings %></div>
-	<div class='storyProblem structureElement'><div class='structureName'>Probl&egrave;me</div><%- problem %></div>
-	<div id='themes' class='structureElement'>
-		<div class='structureName'>
-			Th&egrave;mes abord&eacute;s
-		</div>
+                <form id='validationForm' method='POST' action='/stories/validate' enctype='application/x-www-form-urlencoded'>
+                    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+                    <input type='text' id='storyTitle' name='storyTitle' value='<%= title %>' />
+                    <% var actionValue='publish' ; if(state==='new' ) { actionValue='unpublish' ; } %>
+                        <input type='hidden' id='action' name='action' value='<%=actionValue%>'>
+                </form>
+                <% } else { %>
+                    <div class='storyTitle structureElement'>
+                        <div class='structureName'>Titre</div>
+                        <%=title %>
+                    </div>
+                    <% } %>
+                        <div class='storyFacts structureElement'>
+                            <div class='structureName'>Faits</div>
+                            <%- facts %>
+                        </div>
+                        <div class='storyFeelings structureElement'>
+                            <div class='structureName'>Ressenti</div>
+                            <%- feelings %>
+                        </div>
+                        <div class='storyProblem structureElement'>
+                            <div class='structureName'>Probl&egrave;me</div>
+                            <%- problem %>
+                        </div>
+                        <div id='themes' class='structureElement'>
+                            <div class='structureName'>
+                                Th&egrave;mes abord&eacute;s
+                            </div>
 
-		<%
-		var onclick='';
-		if(canBeValidated == true) {
-		onclick ='onclick=switchTheme(this) style="cursor:pointer;"';
-		}
-		%>
-		<div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
-		<div class='theme' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
-		<div class='theme' <%=onclick%>>Probl&egrave;me avec un subalterne</div>
-		<div class='theme' <%=onclick%>>R&eacute;mun&eacute;ration</div>
-		<div class='theme' <%=onclick%>>Cong&eacute;s</div>
-		<div class='theme' <%=onclick%>>Amour / Sexe</div>
-		<div class='theme' <%=onclick%>>Management</div>
-		<div class='theme' <%=onclick%>>Nouveau poste</div>
-		<div class='theme' <%=onclick%>>Licenciement / reclassement</div>
-		<div class='theme' <%=onclick%>>Ambiance</div>
-	</div>
+                            <% var onclick='' ; if(canBeValidated==true) { onclick='onclick=switchTheme(this) style="cursor:pointer;"' ; } %>
+                                <div class='theme' <%=onclick%>>Probl&egrave;me avec mon sup&eacute;rieur</div>
+                                <div class='theme' <%=onclick%>>Probl&egrave;me avec un coll&egrave;gue</div>
+                                <div class='theme' <%=onclick%>>Probl&egrave;me avec un subalterne</div>
+                                <div class='theme' <%=onclick%>>R&eacute;mun&eacute;ration</div>
+                                <div class='theme' <%=onclick%>>Cong&eacute;s</div>
+                                <div class='theme' <%=onclick%>>Amour / Sexe</div>
+                                <div class='theme' <%=onclick%>>Management</div>
+                                <div class='theme' <%=onclick%>>Nouveau poste</div>
+                                <div class='theme' <%=onclick%>>Licenciement / reclassement</div>
+                                <div class='theme' <%=onclick%>>Ambiance</div>
+                        </div>
 
-	<%
-	if(utilities.isModerator(connexion.user)) {
-	%>
-	<div class='story structureElement'>
-		<div class='structureName'>Publication</div>
-		<div style='text-align:right'>
-			<%
-			var publishDivClass,unpublishDivClass;
-			if(state == 'validated') {
-			publishDivClass='switchOn';	
-			unpublishDivClass='switchOff';
-			}
-			if(state == 'new') {
-			unpublishDivClass='switchOn';
-			publishDivClass='switchOff';
-			}
-			%>
-			<script type='text/javascript'>
-function publish() {
-	document.querySelector('#action').value = 'publish';
-	document.querySelector('#publishDiv').className = 'switchOn';
-	document.querySelector('#unpublishDiv').className = 'switchOff';
+                        <% if(connexion !== undefined && utilities.isModerator(connexion.user)) { %>
+                            <div class='story structureElement'>
+                                <div class='structureName'>Publication</div>
+                                <div style='text-align:right'>
+                                    <% var publishDivClass,unpublishDivClass; if(state=='validated' ) { publishDivClass='switchOn' ; unpublishDivClass='switchOff' ; } if(state=='new' ) { unpublishDivClass='switchOn' ; publishDivClass='switchOff' ; } %>
+                                        <script type='text/javascript'>
+                                            function publish() {
+                                            	document.querySelector('#action').value = 'publish';
+                                            	document.querySelector('#publishDiv').className = 'switchOn';
+                                            	document.querySelector('#unpublishDiv').className = 'switchOff';
+                                            
+                                            }
+                                            function unpublish() {
+                                            	document.querySelector('#action').value = 'unpublish';
+                                            	document.querySelector('#publishDiv').className = 'switchOff';
+                                            	document.querySelector('#unpublishDiv').className = 'switchOn';
+                                            }
+                                        </script>
+                                        <div id='publishDiv' class='<%=publishDivClass%>' onclick='publish()'>Publier</div>
+                                        <div id='unpublishDiv' class='<%=unpublishDivClass%>' onclick='unpublish()'>Refuser publication</div>
+                                </div>
+                            </div>
 
-}
-function unpublish() {
-	document.querySelector('#action').value = 'unpublish';
-	document.querySelector('#publishDiv').className = 'switchOff';
-	document.querySelector('#unpublishDiv').className = 'switchOn';
-}
-			</script>
-			<div id='publishDiv' class='<%=publishDivClass%>' onclick='publish()'>Publier</div>
-			<div id='unpublishDiv' class='<%=unpublishDivClass%>' onclick='unpublish()'>Refuser publication</div>
-		</div>
-	</div>
+                            <input type='button' value='Mod&eacute;rer' onclick='$("#validationForm").submit()' />
+                            <% } %>
+        </div>
+        <div class='specialistOpinionDiv structureElement'>
+            <div class='structureName'>Opinions des sp&eacute;cialistes</div>
+            <% for(var i=0 ; i < specialistsOpinions.length ; i++) { %>
+                <div class='specialistOpinionTitle'>L'avis de
+                    <%=specialistsOpinions[i].author%>
+                </div>
+                <div class='specialistOpinion'>
+                    <%=specialistsOpinions[i].text%>
+                </div>
+                <%}%>
+                    <button onclick='newSpecialistOpinion()'>Ajouter un avis</button>
+                    <div id='newSpecialistOpinionDiv' style='display:none'>
+                        <div class='specialistOpinionTitle'>L'avis de Jean Malaury, anthropogeographe</div>
+                        <textarea id='newSpecialistOpinionTextArea'></textarea>
+                        <button onclick='addSpecialistOpinion()'>&rarr;</button>
+                    </div>
+                    <form id='newSpecialistOpinionForm' method='POST' action='/stories/newSpecialistOpinion' enctype='application/x-www-form-urlencoded'>
+                        <input type='hidden' value='put' name='_method' />
+                        <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+                        <input type='hidden' id='newSpecialistOpinionText' name='newSpecialistOpinionText' value='' />
+                    </form>
+        </div>
+        <div class='comments structureElement'>
+            <div class='structureName'>Commentaires</div>
+            <% var stack=[ ]; var treeIterator=function(aStack,aComments) { for(var i=0 ; i < aComments.length ; i++) { aStack.push(aComments[i]); treeIterator(aStack,aComments[i].comments); } }; treeIterator(stack,comments); stack.reverse();
+	    var lastHiddenCommentLevel = null;
+	    while(true) {
+	    var currentComment=stack.pop();
+	    if(currentComment===undefined) { break; } 
+	    if(lastHiddenCommentLevel !== null && currentComment.level > lastHiddenCommentLevel) {
+	    	continue;
+	    }
+	    if(currentComment.state !== 'validated' ) {
+	   	 if(connexion === undefined || currentComment.author !== connexion.user.username && !utilities.isModerator(connexion.user)) {
+		lastHiddenCommentLevel = currentComment.level;
+	    	continue; 
+	    }}
+            lastHiddenCommentLevel = null;
+            %>
+                <div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
+                    <div class='commentMeta'>
+                        <%=currentComment.author %>
+                    </div>
+                    <%=currentComment.text %>
+                        <button onclick='newComment(<%= currentComment.id %>)'>&rarr;</button>
+                        <div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
+                            <textarea id='inputCommentText<%= currentComment.id %>'></textarea>
+                            <button onclick='addComment(<%= currentComment.id %>)'>&rarr;</button>
+                        </div>
+                        <%if(connexion !== undefined && utilities.isModerator(connexion.user)) {%>
+                            <div style='display:inline;float:right;'>
+                                <% var redBackground='' ; var greenBackground='' ; var blueBackground='' ; if(currentComment.state=='refused' ) { redBackground='font-weight:bold;font-style:normal;color:#000000' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='validated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:bold;font-style:normal;color:#000000' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='toBeValidated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:bold;font-style:normal;color:#000000' ; } %>
+                                    <div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Valid&eacute;</div>
+                                    <div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Refus&eacute;</div>
+                                    <div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>
+                            </div>
+                            <%}%>
+                </div>
+                <% } %>
+                    <div>
+                        <div>Proposer un commentaire
+                            <button onclick='newComment(undefined)'>&rarr;</button>
+                        </div>
+                        <div id='newRootCommentDiv' style='display:none'>
+                            <textarea id='inputCommentText'></textarea>
+                            <button onclick='addComment()'>&rarr;</button>
+                        </div>
+                    </div>
+            <%if(connexion !== undefined && utilities.isModerator(connexion.user)) {%>
+                    <div>
+                        <div style='text-align:right'>Mod&eacute;rer les commentaires
+                            <button onclick='moderateComments()'>&rarr;</button>
+                        </div>
+                    </div>
+                            <%}%>
+        </div>
+        <form id='commentForm' method='POST' action='/stories/addComment' enctype='application/x-www-form-urlencoded'>
+            <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+            <input type='hidden' id='commentId' name='commentId' />
+            <input type='hidden' id='commentText' name='commentText' />
+            <input type='hidden' id='storyUsername' name='storyUsername' value='<%=author%>' />
+        </form>
+        <form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
+            <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+            <input type='hidden' id='commentsStates' name='commentsStates' value='' />
+        </form>
+        </div>
+</body>
 
-	<input type='button' value='Mod&eacute;rer' onclick='$("#validationForm").submit()'/>
-	<%
-	}
-	%>
-</div>
-<div class='specialistOpinionDiv structureElement'>
-	<div class='structureName'>Opinions des sp&eacute;cialistes</div>
-	<%
-	for(var i = 0 ; i < specialistsOpinions.length ; i++) {
-	%> 
-	<div class='specialistOpinionTitle'>L'avis de <%=specialistsOpinions[i].author%></div>
-	<div class='specialistOpinion'><%=specialistsOpinions[i].text%></div>
-	<%}%>
-	<button onclick='newSpecialistOpinion()'>Ajouter un avis</button>
-	<div id='newSpecialistOpinionDiv' style='display:none'>
-		<div class='specialistOpinionTitle'>L'avis de Jean Malaury, anthropogeographe</div>
-		<textarea id='newSpecialistOpinionTextArea'></textarea>
-		<button onclick='addSpecialistOpinion()'>&rarr;</button>
-	</div>
-	<form id='newSpecialistOpinionForm' method='POST' action='/stories/newSpecialistOpinion' enctype='application/x-www-form-urlencoded'>
-		<input type='hidden' value='put' name='_method'/>
-		<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
-		<input type='hidden' id='newSpecialistOpinionText' name='newSpecialistOpinionText' value=''/>
-	</form>
-</div>
-<div class='comments structureElement'>
-	<div class='structureName'>Commentaires</div>
-	<% 
-	var stack = [];       
-
-	var treeIterator = function(aStack,aComments) {
-	for(var i = 0 ; i < aComments.length ; i++) {
-	aStack.push(aComments[i]);
-	treeIterator(aStack,aComments[i].comments);		
-	}
-	};
-	treeIterator(stack,comments);
-	stack.reverse();
-	while(true) {
-	var currentComment = stack.pop();
-	if(currentComment == undefined) {
-	break;	
-	};
-	if(currentComment.state != 'validated') {
-	if(currentComment.author != connexion.user.username && !isModerator(connexion.user)) {
-	break;
-	}
-
-	}
-	%>
-	<div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
-		<div class='commentMeta'><%= currentComment.author %></div>
-		<%= currentComment.text %>
-		<button onclick='newComment(<%= currentComment.id %>)'>&rarr;</button>
-		<div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
-			<textarea id='inputCommentText<%= currentComment.id %>'></textarea>
-			<button onclick='addComment(<%= currentComment.id %>)'>&rarr;</button>
-		</div>
-		<%if(isModerator(connexion.user)) {%>
-		<div style='display:inline;float:right;'>
-			<%
-			var redBackground = '';
-			var greenBackground = '';
-			var blueBackground = '';
-			if(currentComment.state == 'refused') {
-			//redBackground='background-color:red;';	
-			redBackground='font-weitght:bold;font-style:normal;color:#000000';	
-			greenBackground='font-weight:normal;font-style:italic;color:#777777';	
-			blueBackground='font-weight:normal;font-style:italic;color:#777777';	
-			}
-			if(currentComment.state == 'validated') {
-			redBackground='font-weitght:normal;font-style:italic;color:#777777';	
-			greenBackground='font-weight:bold;font-style:normal;color:#000000';	
-			blueBackground='font-weight:normal;font-style:italic;color:#777777';	
-			}
-			if(currentComment.state == 'toBeValidated') {
-			redBackground='font-weitght:normal;font-style:italic;color:#777777';	
-			greenBackground='font-weight:normal;font-style:italic;color:#777777';	
-			blueBackground='font-weight:bold;font-style:normal;color:#000000';	
-			}
-			%>
-			<div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Valid&eacute;</div>
-			<div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Refus&eacute;</div>
-			<div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>
-			<!--<div id='red<%= currentComment.id %>' style='border:1px red solid;width:20px;display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>&nbsp;</div>
-					<div id='green<%= currentComment.id %>' style='border:1px green solid;width:20px;display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>&nbsp;</div>
-					<div id='blue<%= currentComment.id %>' style='border:1px blue solid;width:20px;display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>&nbsp;</div>-->
-		</div>
-		<%}%>
-	</div>
-	<% 
-	}
-	%>
-	<div>
-		<div>Proposer un commentaire
-			<button onclick='newComment(undefined)'>&rarr;</button>
-		</div>
-		<div id='newRootCommentDiv' style='display:none'>
-			<textarea id='inputCommentText'></textarea>
-			<button onclick='addComment()'>&rarr;</button>
-		</div>
-	</div>
-	<div>
-		<div style='text-align:right'>Mod&eacute;rer les commentaires
-			<button onclick='moderateComments()'>&rarr;</button>
-		</div>
-	</div>
-</div>
-<form id='commentForm' method='POST' action='/stories/addComment' enctype='application/x-www-form-urlencoded'>
-	<input type='hidden' value='put' name='_method'/>
-	<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
-	<input type='hidden' id='commentId' name='commentId'/>
-	<input type='hidden' id='commentText' name='commentText'/>
-	<input type='hidden' id='storyUsername' name='storyUsername' value='<%=author%>'/>
-</form>
-<form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
-	<input type='hidden' value='put' name='_method'/>
-	<input type='hidden' id='storyId' name='storyId' value='<%=storyId%>'/>
-	<input type='hidden' id='commentsStates' name='commentsStates' value=''/>
-</form>
-	</div>
-	</body>
-	</html>
+</html>
