@@ -17,7 +17,9 @@
 	<div id='actions'>
 		<a href='/stories/search'>Rechercher une histoire</a>
 		<a href='/stories/new'>Raconter une histoire</a>
+		<%if(utilities.isModerator(connexion.user)) {%>
 		<a href='/stories/moderate'>Mod&eacute;rer les histoires</a>
+		<%}%>
 	</div>
 </div>
 <div class='structureElement'>

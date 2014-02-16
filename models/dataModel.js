@@ -25,15 +25,18 @@ exports.comment = function(id,author,creationDate,text) {
 	this.state = 'toBeValidated';
 }
 
-exports.specialistOpinion = function(id,author,creationDate,text) {
+exports.specialistOpinion = function(id,author,creationDate,text,profession,firstName,lastName) {
 	this.id = id;
 	this.author = author;
 	this.creationDate = creationDate;
 	this.text = text;
 	this.state = 'toBeValidated';
+	this.profession = profession;
+	this.firstName = firstName;
+	this.lastName = lastName;
 }
 
-exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,studies,stories,profil) {
+exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,studies,stories,profil,firstName,lastName,profession) {
 	this.id = id;
 	this.username= username;
 	this.password = password;
@@ -44,6 +47,9 @@ exports.user = function(id,username,password,age,hierarchyLevel,activity,gender,
 	this.studies = studies;
 	this.stories = stories;
 	this.profil = profil;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.profession = profession;
 };
 
 exports.storyCommentedEvent = function(username,storyid,comment,commentUsername,creationDate) {

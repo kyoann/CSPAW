@@ -1,19 +1,17 @@
 var model = require('./dataModel');
 
-
 var users = [
  new model.user(1, 'Thi', 'Ly', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['moderator']),
- new model.user(2, 'u1', 'u1', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
- new model.user(3, 'u2', 'u2', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
- new model.user(4, 's1', 's1', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist']),
  new model.user(5, 'u', 'u', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
- new model.user(6, 'm', 'm', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['moderator']),
- new model.user(7, 's', 's', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist']),
+ new model.user(6, 'm', 'm', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['moderator'], "Long John", "Silver", null),
+ new model.user(7, 's', 's', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist'], "Jean", "Malaury", "Anthopo-géographe"),
+ new model.user(8, 'uu', 'uu', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
+ new model.user(10, 'ss', 'ss', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist'], "Edgar ALlan", "Poe", "écrivain"),
 
 ];
 exports.createUser = function (username, password, age, hierarchyLevel, activity, gender, studies) {
     var idx = users.length;
-    var user = new model.user(idx, username, password, age, hierarchyLevel, activity, gender, studies, ['user']);
+    var user = new model.user(idx, username, password, age, hierarchyLevel, activity, gender, studies, ['user'], null, null, null);
     users[idx] = user;
     return user;
 };

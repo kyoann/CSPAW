@@ -119,100 +119,146 @@ exports.newSpecialistOpinion = function (req, res) {
     var storyId = req.body.storyId;
     var specialistOpinionText = req.body.newSpecialistOpinionText;
 
-    var story = model.newSpecialistOpinion('Martin', storyId, specialistOpinionText);
-
-    renderConsult(story, req, res);
+    var story = model.getStoryAsync(storyId,function(err,story) {
+	    if(err) {
+		    console.log(err);
+		    renderConsult(story, req, res);
+		    return;
+	    }
+	    else {
+		    story.version++;
+		    story.specialistsOpinionsToValidate++;
+		    var dataModel = require('../models/dataModel');
+		    var specialistOpinion = new dataModel.specialistOpinion(story.version,req.user.username,new Date(),specialistOpinionText,req.user.profession,req.user.firstName,req.user.lastName);
+		    story.specialistsOpinions.push(specialistOpinion);
+		    model.updateStory(story,function(err) {
+			    if(err) console.log(err); 
+			    renderConsult(story, req, res);
+		    });
+	    }
+    });
 };
 
 exports.moderate = function (req, res) {
-    var newStories = model.getNewStories();
-    var storiesWithCommentsToValidate = model.getStoriesWithCommentsToValidate();
-    var storiesWithSpecialistsOpinionsToValidate = model.getStoriesWithSpecialistsOpinionsToValidate();
-    var view = {
-        storiesToValidate: newStories,
-        storiesWithCommentsToValidate: storiesWithCommentsToValidate,
-        storiesWithSpecialistsOpinionsToValidate: storiesWithSpecialistsOpinionsToValidate
-    };
+	var newStories = model.getNewStories();
+	var storiesWithCommentsToValidate = model.getStoriesWithCommentsToValidate();
+	var storiesWithSpecialistsOpinionsToValidate = model.getStoriesWithSpecialistsOpinionsToValidate();
+	var view = {
+		storiesToValidate: newStories,
+		storiesWithCommentsToValidate: storiesWithCommentsToValidate,
+		storiesWithSpecialistsOpinionsToValidate: storiesWithSpecialistsOpinionsToValidate
+	};
 
-    usersController.addConnexionView(req, view);
-    res.render('moderate', view, function (err, stuff) {
-        if (!err) {
-            res.write(stuff);
-            res.end();
-        }
-    });
+	usersController.addConnexionView(req, view);
+	res.render('moderate', view, function (err, stuff) {
+		if (!err) {
+			res.write(stuff);
+			res.end();
+		}
+	});
 };
 
 exports.validateStory = function (req, res) {
-    var storyId = req.body.storyId;
-    var storyTitle = req.body.storyTitle;
-    var action = req.body.action;
-    var storyState;
-    if (action === 'publish') {
-        storyState = 'validated';
-    } else {
-        storyState = 'new';
-    }
-    var story = model.validateStory(storyId, storyTitle, storyState);
+	var storyId = req.body.storyId;
+	var storyTitle = req.body.storyTitle;
+	var action = req.body.action;
+	var storyState;
+	if (action === 'publish') {
+		storyState = 'validated';
+	} else {
+		storyState = 'new';
+	}
+	var story = model.validateStory(storyId, storyTitle, storyState);
 
-    renderConsult(story, req, res);
+	renderConsult(story, req, res);
 };
+exports.moderateSO = function (req, res) {
+	var storyId = req.body.storyId;
+	var SOStates = JSON.parse(req.body.SOStates);
+	if (!utilities.isModerator(req.user)) {
+		renderConsult(story, req, res);
+		return;
+	}
+    var story = model.getStoryAsync(storyId,function(err,story) {
+	    if(err) {
+		    console.log(err);
+		    renderConsult(story, req, res);
+		    return;
+	    }
+	    else {
+		    var SO = story.specialistsOpinions;
+		    story.specialistsOpinionsToValidate = 0;
+		   for(var i = 0 ; i < SO.length ; i++) {
+			   if(SOStates["SO"+SO[i].id] !== undefined) {
+				   SO[i].state = SOStates["SO"+SO[i].id];
+			   }
+			   if(SO[i].state === "toBeValidated") {
+				   story.specialistsOpinionsToValidate++;
+			   }
+		   } 
+		   model.updateStory(story,function(err) {
+			   if(err) console.log(err); 
+			   renderConsult(story, req, res);
+		   });
+	    }
+    });
+}
 exports.validateComments = function (req, res) {
-    var storyId = req.body.storyId;
-    var commentsStates = JSON.parse(req.body.commentsStates);
-    if (req.user !== undefined && utilities.isModerator(req.user)) {
-        var story = model.validateComments(storyId, commentsStates);
-    }
-    renderConsult(story, req, res);
+	var storyId = req.body.storyId;
+	var commentsStates = JSON.parse(req.body.commentsStates);
+	if (req.user !== undefined && utilities.isModerator(req.user)) {
+		var story = model.validateComments(storyId, commentsStates);
+	}
+	renderConsult(story, req, res);
 }
 exports.searchPrepareForm = function (req, res) {
-    var view = {
-        stories: []
-    };
-    usersController.addConnexionView(req, view);
-    res.render('searchStory',
-        view, function (err, stuff) {
-            if (err) {
-                console.log(err);
-            }
-            if (!err) {
-                res.write(stuff);
-                res.end();
-            }
-        });
+	var view = {
+		stories: []
+	};
+	usersController.addConnexionView(req, view);
+	res.render('searchStory',
+		   view, function (err, stuff) {
+			   if (err) {
+				   console.log(err);
+			   }
+			   if (!err) {
+				   res.write(stuff);
+				   res.end();
+			   }
+		   });
 }
 exports.search = function (req, res) {
-    model.getRecentStories(function (err, stories) {
-        usersController.addConnexionView(req, stories);
-        res.render('searchStory',
-            stories, function (err, stuff) {
-                if (err) {
-                    console.log(err);
-                }
-                if (!err) {
-                    res.write(stuff);
-                    res.end();
-                }
-            });
-    });
+	model.getRecentStories(function (err, stories) {
+		usersController.addConnexionView(req, stories);
+		res.render('searchStory',
+			   stories, function (err, stuff) {
+				   if (err) {
+					   console.log(err);
+				   }
+				   if (!err) {
+					   res.write(stuff);
+					   res.end();
+				   }
+			   });
+	});
 }
 
 function formatString(s) {
-    var f = s.replace('\r\n', '<br>');
-    return f;
+	var f = s.replace('\r\n', '<br>');
+	return f;
 }
 
 function storyModel2storyView(aStory) {
-    return {
-        storyId: aStory.id,
-        title: formatString(aStory.title),
-        facts: formatString(aStory.facts),
-        feelings: formatString(aStory.feelings),
-        problem: formatString(aStory.problem),
-        comments: aStory.comments,
-        specialistsOpinions: aStory.specialistsOpinions,
-        author: aStory.username,
-        themes: aStory.themes,
-        state: aStory.state,
-    };
+	return {
+		storyId: aStory.id,
+		title: formatString(aStory.title),
+		facts: formatString(aStory.facts),
+		feelings: formatString(aStory.feelings),
+		problem: formatString(aStory.problem),
+		comments: aStory.comments,
+		specialistsOpinions: aStory.specialistsOpinions,
+		author: aStory.username,
+		themes: aStory.themes,
+		state: aStory.state,
+	};
 }

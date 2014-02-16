@@ -11,14 +11,14 @@
         	cursor:normal;
         	font-style:normal;
         	color:#000000;
-        	font-weitght:bold;
+        	font-weight:bold;
         }
         .switchOff {
         	display:inline-block;
         	cursor:pointer;
         	font-style:italic;
         	color:#777777;
-        	font-weitght:normal;
+        	font-weight:normal;
         }
     </style>
     <script src="/jquery-1.10.2.js"></script>
@@ -77,7 +77,6 @@
         			$("#blue"+aNumber).css('font-weight','');	
         			$("#blue"+aNumber).css('font-style','italic');	
         			$("#blue"+aNumber).css('color','#777777');	
-        			//	$("#commentState"+aNumber).val("red");
         		}
         		if(aColor == "green") {
         			$("#red"+aNumber).css('font-weight','');	
@@ -89,7 +88,6 @@
         			$("#blue"+aNumber).css('font-weight','');	
         			$("#blue"+aNumber).css('font-style','italic');	
         			$("#blue"+aNumber).css('color','#777777');	
-        			//$("#commentState"+aNumber).val("green");
         		}
         		if(aColor == "blue") {
         			$("#red"+aNumber).css('font-weight','');	
@@ -101,7 +99,6 @@
         			$("#blue"+aNumber).css('font-weight','bold');	
         			$("#blue"+aNumber).css('font-style','');	
         			$("#blue"+aNumber).css('color','#000000');	
-        			//$("#commentState"+aNumber).val("blue");
         		}
         	}
         	function moderateComments() {
@@ -161,7 +158,7 @@
                                 <div class='theme' <%=onclick%>>Ambiance</div>
                         </div>
 
-                        <% if(connexion !== undefined && utilities.isModerator(connexion.user)) { %>
+                        <% if(connexion !==undefined && utilities.isModerator(connexion.user)) { %>
                             <div class='story structureElement'>
                                 <div class='structureName'>Publication</div>
                                 <div style='text-align:right'>
@@ -189,91 +186,161 @@
         </div>
         <div class='specialistOpinionDiv structureElement'>
             <div class='structureName'>Opinions des sp&eacute;cialistes</div>
-            <% for(var i=0 ; i < specialistsOpinions.length ; i++) { %>
+            <% for(var i=0 ; i < specialistsOpinions.length ; i++) { var currentSpecialistOpinion=specialistsOpinions[i]; var isModifiable=false; if(connexion !==undefined && utilities.isSpecialist(connexion.user) && connexion.user.username===currentSpecialistOpinion.author && currentSpecialistOpinion.state !=="validated" ) { isModifiable=true; } %>
+	    <% if(currentSpecialistOpinion.state !== "validated") {
+	    	if(connexion.user === undefined) {
+		continue;}
+	    	if(connexion.user.username !== currentSpecialistOpinion.author && !utilities.isModerator(connexion.user)) {
+		continue;}
+	    } %>
                 <div class='specialistOpinionTitle'>L'avis de
-                    <%=specialistsOpinions[i].author%>
+                    <%=specialistsOpinions[i].firstName%> <%=specialistsOpinions[i].LastName%>, <%=specialistsOpinions[i].profession%>
                 </div>
-                <div class='specialistOpinion'>
+                <div id='specialistOpinionDiv<%=i%>' class='specialistOpinion' <%-isModifiable ? ' contenteditable="true" ': ""%>>
                     <%=specialistsOpinions[i].text%>
                 </div>
-                <%}%>
-                    <button onclick='newSpecialistOpinion()'>Ajouter un avis</button>
-                    <div id='newSpecialistOpinionDiv' style='display:none'>
-                        <div class='specialistOpinionTitle'>L'avis de Jean Malaury, anthropogeographe</div>
-                        <textarea id='newSpecialistOpinionTextArea'></textarea>
-                        <button onclick='addSpecialistOpinion()'>&rarr;</button>
-                    </div>
-                    <form id='newSpecialistOpinionForm' method='POST' action='/stories/newSpecialistOpinion' enctype='application/x-www-form-urlencoded'>
-                        <input type='hidden' value='put' name='_method' />
-                        <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
-                        <input type='hidden' id='newSpecialistOpinionText' name='newSpecialistOpinionText' value='' />
-                    </form>
-        </div>
-        <div class='comments structureElement'>
-            <div class='structureName'>Commentaires</div>
-            <% var stack=[ ]; var treeIterator=function(aStack,aComments) { for(var i=0 ; i < aComments.length ; i++) { aStack.push(aComments[i]); treeIterator(aStack,aComments[i].comments); } }; treeIterator(stack,comments); stack.reverse();
-	    var lastHiddenCommentLevel = null;
-	    while(true) {
-	    var currentComment=stack.pop();
-	    if(currentComment===undefined) { break; } 
-	    if(lastHiddenCommentLevel !== null && currentComment.level > lastHiddenCommentLevel) {
-	    	continue;
-	    }
-	    if(currentComment.state !== 'validated' ) {
-	   	 if(connexion === undefined || currentComment.author !== connexion.user.username && !utilities.isModerator(connexion.user)) {
-		lastHiddenCommentLevel = currentComment.level;
-	    	continue; 
-	    }}
-            lastHiddenCommentLevel = null;
-            %>
-                <div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
-                    <div class='commentMeta'>
-                        <%=currentComment.author %>
-                    </div>
-                    <%=currentComment.text %>
-                        <button onclick='newComment(<%= currentComment.id %>)'>&rarr;</button>
-                        <div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
-                            <textarea id='inputCommentText<%= currentComment.id %>'></textarea>
-                            <button onclick='addComment(<%= currentComment.id %>)'>&rarr;</button>
-                        </div>
-                        <%if(connexion !== undefined && utilities.isModerator(connexion.user)) {%>
-                            <div style='display:inline;float:right;'>
-                                <% var redBackground='' ; var greenBackground='' ; var blueBackground='' ; if(currentComment.state=='refused' ) { redBackground='font-weight:bold;font-style:normal;color:#000000' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='validated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:bold;font-style:normal;color:#000000' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='toBeValidated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:bold;font-style:normal;color:#000000' ; } %>
-                                    <div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Valid&eacute;</div>
-                                    <div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Refus&eacute;</div>
-                                    <div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>
-                            </div>
-                            <%}%>
-                </div>
-                <% } %>
+                <%if(isModifiable){%>
                     <div>
-                        <div>Proposer un commentaire
-                            <button onclick='newComment(undefined)'>&rarr;</button>
-                        </div>
-                        <div id='newRootCommentDiv' style='display:none'>
-                            <textarea id='inputCommentText'></textarea>
-                            <button onclick='addComment()'>&rarr;</button>
-                        </div>
+                        <button onclick='modifySpecialistOpinion(<%=i%>,<%=currentSpecialistOpinion.id%>)'>Modifier</button>
                     </div>
-            <%if(connexion !== undefined && utilities.isModerator(connexion.user)) {%>
-                    <div>
-                        <div style='text-align:right'>Mod&eacute;rer les commentaires
-                            <button onclick='moderateComments()'>&rarr;</button>
-                        </div>
-                    </div>
-                            <%}%>
-        </div>
-        <form id='commentForm' method='POST' action='/stories/addComment' enctype='application/x-www-form-urlencoded'>
-            <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
-            <input type='hidden' id='commentId' name='commentId' />
-            <input type='hidden' id='commentText' name='commentText' />
-            <input type='hidden' id='storyUsername' name='storyUsername' value='<%=author%>' />
-        </form>
-        <form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
-            <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
-            <input type='hidden' id='commentsStates' name='commentsStates' value='' />
-        </form>
-        </div>
-</body>
+                    <%}%>
+		    <%if(utilities.isModerator(connexion.user)) {%>
+		    <div style='display:inline;text-align:right;'>
+			    <%
+			    var SOValidatedClass='' ; 
+			    var SORefusedClass='' ;
+			    var SOToBeValidatedClass='' ;
+			    if(currentSpecialistOpinion.state=='refused' ) {  
+			    SOValidatedClass='switchOff' 
+			    SORefusedClass='switchOn' ; 				
+			    SOToBeValidatedClass="switchOff";
+			    }
+			    if(currentSpecialistOpinion.state=='validated' ) {
+			    SOValidatedClass='switchOn' 
+			    SORefusedClass='switchOff' ; 				
+			    SOToBeValidatedClass="switchOff";
+			    } 
+			    if(currentSpecialistOpinion.state=='toBeValidated' ) {
+			    SOValidatedClass='switchOff' 
+			    SORefusedClass='switchOff' ; 				
+			    SOToBeValidatedClass="switchOn";
+			    } %>
+			    <div class='<%=SOValidatedClass%>' id='SOValidated<%= currentSpecialistOpinion.id %>' onclick='switchSOState("validated",<%= currentSpecialistOpinion.id %>)'>Valid&eacute;</div>
+			    <div class='<%=SORefusedClass%>' id='SORefused<%= currentSpecialistOpinion.id %>' onclick='switchSOState("refused",<%= currentSpecialistOpinion.id %>)'>Refus&eacute;</div>
+			    <div class='<%=SOToBeValidatedClass%>' id='SOToBeValidated<%= currentSpecialistOpinion.id %>' onclick='switchSOState("toBeValidated",<%= currentSpecialistOpinion.id %>)'>A valider</div>
+		    </div>
+		    <%}%>
+		    <%}%>
+		    <%if(utilities.isModerator(connexion.user)) {%>
+		    <button onclick='moderateSO()'>Mod&eacute;rer</button>
+		    <script type="text/ecmascript">
+var SOStates = {};
+function switchSOState(state,SOid) {
+SOStates["SO"+SOid] = state;
+if(state === 'validated') {
+document.querySelector("#SOValidated"+SOid).className = 'switchOn';
+document.querySelector("#SORefused"+SOid).className = 'switchOff';
+document.querySelector("#SOToBeValidated"+SOid).className = 'switchOff';
+}
+if(state === 'refused') {
+document.querySelector("#SOValidated"+SOid).className = 'switchOff';
+document.querySelector("#SORefused"+SOid).className = 'switchOn';
+document.querySelector("#SOToBeValidated"+SOid).className = 'switchOff';
+}
+if(state === 'toBeValidated') {
+document.querySelector("#SOValidated"+SOid).className = 'switchOff';
+document.querySelector("#SORefused"+SOid).className = 'switchOff';
+document.querySelector("#SOToBeValidated"+SOid).className = 'switchOn';
+}
+}
+function moderateSO() {
+document.querySelector("#SOStates").value = JSON.stringify(SOStates);
+document.querySelector("#SOValidationForm").submit();
+}
+		    </script>
+		    <form id='SOValidationForm' method='POST' action='/stories/moderateSO' enctype='application/x-www-form-urlencoded'>
+			    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+			    <input type='hidden' id='SOStates' name='SOStates' value='' />
+		    </form>
+		    <%}%>
+		    <%if(connexion.user !==undefined && utilities.isSpecialist(connexion.user) ) {%>
+		    <button onclick='newSpecialistOpinion()'>Ajouter un avis</button>
+		    <div id='newSpecialistOpinionDiv' style='display:none'>
+			    <div class='specialistOpinionTitle'>L'avis de <%=connexion.user.username%>,<%=connexion.user.profession%></div>
+			    <textarea id='newSpecialistOpinionTextArea'></textarea>
+			    <button onclick='addSpecialistOpinion()'>&rarr;</button>
+		    </div>
+		    <form id='newSpecialistOpinionForm' method='POST' action='/stories/newSpecialistOpinion' enctype='application/x-www-form-urlencoded'>
+			    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+			    <input type='hidden' id='newSpecialistOpinionText' name='newSpecialistOpinionText' value='' />
+		    </form>
+		    <script type="text/ecmascript">
+function modifySpecialistOpinion(i,specialistOpinionId) {
+						    var text = document.querySelector("#specialistOpinionDiv"+i).textContent;
+						    document.querySelector("#specialistOpinionText").value = text;
+						     document.querySelector("#specialistOpinionId").value = specialistOpinionId;
+						    document.querySelector("#modifySpecialistOpinionForm").submit();
+						}
+		    </script>
+		    <form id='modifySpecialistOpinionForm' method='POST' action='/stories/modifySpecialistOpinion' enctype='application/x-www-form-urlencoded'>
+			    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+			    <input type='hidden' id='specialistOpinionId' name='specialistOpinionId' value='' />
+			    <input type='hidden' id='specialistOpinionText' name='specialistOpinionText' value='' />
+		    </form>
+		    <%}%>
 
-</html>
+	    </div>
+	    <div class='comments structureElement'>
+		    <div class='structureName'>Commentaires</div>
+		    <% var stack=[ ]; var treeIterator=function(aStack,aComments) { for(var i=0 ; i < aComments.length ; i++) { aStack.push(aComments[i]); treeIterator(aStack,aComments[i].comments); } }; treeIterator(stack,comments); stack.reverse(); var lastHiddenCommentLevel=null; while(true) { var currentComment=stack.pop(); if(currentComment===undefined) { break; } if(lastHiddenCommentLevel !==null && currentComment.level>lastHiddenCommentLevel) { continue; } if(currentComment.state !== 'validated' ) { if(connexion === undefined || currentComment.author !== connexion.user.username && !utilities.isModerator(connexion.user)) { lastHiddenCommentLevel = currentComment.level; continue; }} lastHiddenCommentLevel = null; %>
+		    <div class='comment' style='margin-left:<%=currentComment.level * 20 %>px'>
+			    <div class='commentMeta'>
+				    <%=currentComment.author %>
+			    </div>
+			    <%=currentComment.text %>
+			    <button onclick='newComment(<%= currentComment.id %>)'>&rarr;</button>
+			    <div id='inputCommentDiv<%= currentComment.id %>' style='display:none'>
+				    <textarea id='inputCommentText<%= currentComment.id %>'></textarea>
+				    <button onclick='addComment(<%= currentComment.id %>)'>&rarr;</button>
+			    </div>
+			    <%if(connexion !==undefined && utilities.isModerator(connexion.user)) {%>
+			    <div style='display:inline;float:right;'>
+				    <% var redBackground='' ; var greenBackground='' ; var blueBackground='' ; if(currentComment.state=='refused' ) { redBackground='font-weight:bold;font-style:normal;color:#000000' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='validated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:bold;font-style:normal;color:#000000' ; blueBackground='font-weight:normal;font-style:italic;color:#777777' ; } if(currentComment.state=='toBeValidated' ) { redBackground='font-weight:normal;font-style:italic;color:#777777' ; greenBackground='font-weight:normal;font-style:italic;color:#777777' ; blueBackground='font-weight:bold;font-style:normal;color:#000000' ; } %>
+				    <div id='green<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=greenBackground%>' onclick='switchColor("green",<%= currentComment.id %>)'>Valid&eacute;</div>
+				    <div id='red<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=redBackground%>' onclick='switchColor("red",<%= currentComment.id %>)'>Refus&eacute;</div>
+				    <div id='blue<%= currentComment.id %>' style='display:inline-block;cursor:pointer;<%=blueBackground%>' onclick='switchColor("blue",<%= currentComment.id %>)'>A valider</div>
+			    </div>
+			    <%}%>
+		    </div>
+		    <% } %>
+		    <div>
+			    <div>Proposer un commentaire
+				    <button onclick='newComment(undefined)'>&rarr;</button>
+			    </div>
+			    <div id='newRootCommentDiv' style='display:none'>
+				    <textarea id='inputCommentText'></textarea>
+				    <button onclick='addComment()'>&rarr;</button>
+			    </div>
+		    </div>
+		    <%if(connexion !==undefined && utilities.isModerator(connexion.user)) {%>
+		    <div>
+			    <div style='text-align:right'>Mod&eacute;rer les commentaires
+				    <button onclick='moderateComments()'>&rarr;</button>
+			    </div>
+		    </div>
+		    <%}%>
+	    </div>
+	    <form id='commentForm' method='POST' action='/stories/addComment' enctype='application/x-www-form-urlencoded'>
+		    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+		    <input type='hidden' id='commentId' name='commentId' />
+		    <input type='hidden' id='commentText' name='commentText' />
+		    <input type='hidden' id='storyUsername' name='storyUsername' value='<%=author%>' />
+	    </form>
+	    <form id='commentsValidationForm' method='POST' action='/stories/validateComments' enctype='application/x-www-form-urlencoded'>
+		    <input type='hidden' id='storyId' name='storyId' value='<%=storyId%>' />
+		    <input type='hidden' id='commentsStates' name='commentsStates' value='' />
+	    </form>
+    </div>
+    </body>
+
+    </html>

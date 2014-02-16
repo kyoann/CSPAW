@@ -2,6 +2,10 @@ var model = require('./dataModel');
 
 var stories = [];
 
+var temp = new model.story(0,"histoire de test","Faits","Ressenti","Problème",5,new Date(),'u');
+temp.state = "validated";
+stories.push(temp);
+
 exports.createStory = function(userId,username,date,title,facts,feelings,problem) {
 	var index = stories.length;
 
@@ -20,23 +24,12 @@ exports.getUserStories = function(userId,done) {
 	done(null,userStories);
 }
 
-exports.newSpecialistOpinion = function(userId,storyId,specialistOpinionText) {
-	var story = exports.getStory(storyId);
-	story.version++;
-	story.specialistsOpinionsToValidate++;
-	var specialistOpinion = new model.specialistOpinion(story.version,"L'avis de Jean Malaury, anthropo-geographe",new Date(),specialistOpinionText);
-
-	story.specialistsOpinions.push(specialistOpinion);
-
-	return story;
-};
 exports.newComment = function(version,username,date,text) {
 	return new model.comment(version,username,date,text);
 };
 exports.updateStory = function(story,done) {
 	done(null);
 }
-
 
 exports.getNewStories = function() {
 	var newStories = [];
@@ -74,14 +67,16 @@ exports.searchStories = function() {
 	return stories;
 };
 exports.getStory = function(storyId) {
-	console.log("getStory:"+storyId);
 	for(var i = 0 ; i < stories.length ; i++) {
 		if(stories[i].id == storyId) {
-			console.log("getStory:"+storyId+" found");
 			return stories[i];
 		}
 	}
 };
+exports.getStoryAsync = function(storyId,done) {
+	var story = exports.getStory(storyId);
+	done(null,story);
+}
 
 exports.validateStory = function(storyId,storyTitle,storyState) {
 	var story = exports.getStory(storyId);
@@ -94,9 +89,7 @@ exports.validateComments = function(storyId,commentsStates) {
 	var story = exports.getStory(storyId);
 	story.commentsToValidate = 0;
 	var f = function(aComment) {
-		console.log("visiting comment:"+aComment.id);
 		var state = commentsStates[aComment.id];
-		console.log("new comment state:"+state);
 		if(state == undefined){
 			return;
 		} 
@@ -127,6 +120,12 @@ function commentsIterator(aComments, aFunction) {
 		aFunction(aComments[i]);
 	}
 }
-exports.getRecentStories = function(done) {
-	done(null,{stories:stories});
+exports.getRecentStories = function(filter,done) {
+	var recentStories = [];
+	for(var i = 0 ; i < stories.length ; i++) {
+		if(!filter(stories[i])) {
+			recentStories.push(stories[i]);
+		}
+	}
+	done(null,{stories:recentStories});
 }

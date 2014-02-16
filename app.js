@@ -21,8 +21,6 @@ passport.deserializeUser(function (username, done) {
 });
 
 passport.use(new LocalStrategy(function (username, password, done) {
-
-    console.log("find:" + username);
     usersModel.findByUsername(username, function (err, user) {
         if (err) {
             return done(err);
@@ -78,9 +76,10 @@ app.configure(function () {
     app.get('/stories/moderate', storiesController.moderate);
     app.post('/stories/validate', storiesController.validateStory);
     app.get('/stories/consult/:storyId', storiesController.consult);
-    app.put('/stories/newSpecialistOpinion', storiesController.newSpecialistOpinion);
+    app.post('/stories/newSpecialistOpinion', storiesController.newSpecialistOpinion);
     app.get('/stories/search', storiesController.searchPrepareForm);
     app.post('/stories/search', storiesController.search);
+    app.post('/stories/moderateSO', storiesController.moderateSO);
 
     var usersController = require('./controllers/users');
     app.get('/users/new', usersController.new);
