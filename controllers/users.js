@@ -1,5 +1,6 @@
 var model = require('../models/users');
 var storiesModel = require('../models/stories');
+var utilities = require('./utilities');
 
 exports.new = function(req,res) {
 	var view = exports.addConnexionView(req,{});
@@ -35,7 +36,6 @@ exports.update = function(req,res) {
 
 
 exports.login = function(req,res) {
-	console.log("users.login");
 	res.redirect('/');
 
 };
@@ -45,12 +45,18 @@ exports.logout = function(req,res) {
 	res.redirect('/');
 };
 exports.consult = function(req,res) {
-	renderConsultProfil(req.user,res);
+	if(utilities.isModerator(req.user)) {
+		renderModeratorPage(req,res);
+	}
+	else {
+		renderConsultProfil(req.user,res);
+	}
 };
 function renderConsultProfil(user,res) {
 	user.connexion = {};	
 	user.connexion.user = user;
-	user.utilities = require('../views/utilities');
+	user.utilities = utilities;
+
 
 	storiesModel.getUserStories(user.id, function(err,userStories) {
 		if(!err) {
@@ -74,7 +80,9 @@ function renderConsultProfil(user,res) {
 		}
 	});
 }
+function renderModeratorPage(req,res) {
 
+}
 function addEventsToStory(stories,events) {
 	for(var i = 0,l=stories.length;i < l;i++) {
 		stories[i].recentComments = [];

@@ -1,0 +1,17 @@
+<div>
+	<div>
+		<a href='#/create'>Ajouter un billet</a>
+	</div>
+	<div id='billet{{billet.id}}' ng-repeat='billet in billets'>
+		<input type='text' ng-model='billet.title' ng-disabled='!billet.modifiable' value='{{billet.title}}'/>
+		créé le <span>{{billet.creationDate | date : 'd/M'}}</span>
+		<br/>
+		<textarea ng-model='billet.text' ng-disabled='!billet.modifiable'></textarea>
+		<br/>
+		<div ng-switch on='billet.modifiable'>
+			<button ng-switch-when='false' ng-click="switchEditable(billet)">Editer</button>
+			<button ng-switch-when='true' ng-click="switchEditable(billet)">Annuler</button>
+			<button ng-switch-when='true' ng-click="validate(billet)">Valider</button>
+		</div>
+	</div>
+</div>

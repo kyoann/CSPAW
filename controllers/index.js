@@ -3,6 +3,8 @@ var storiesModel = require('../models/stories');
 var utilities = require('./utilities');
 
 exports.index = function(req,res) {
+	console.log('cookies:'+JSON.stringify(req.cookies));
+
 	var view ={ title : 'Accueil' };
 	view.utilities = require('../controllers/utilities');
 	usersController.addConnexionView(req,view);

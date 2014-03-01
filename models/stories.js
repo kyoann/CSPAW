@@ -10,7 +10,6 @@ exports.createStory = function(userId,username,date,title,facts,feelings,problem
 	var index = stories.length;
 
 	stories[index] = new model.story(index,title,facts,feelings,problem,userId,date,username);
-	console.log("hello1");
 	return stories[index];
 };
 exports.getUserStories = function(userId,done) {

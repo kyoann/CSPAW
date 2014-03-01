@@ -74,3 +74,11 @@ exports.commentCommentedEvent = function(storyTitle,storyId,commentedCommentUser
 		creationDate:creationDate
 	}
 };
+exports.billet = function(id,title,text,creationDate) {
+	return {
+		id:id,
+		title:title,
+		text:text,
+		creationDate:creationDate
+	};
+}

@@ -89,5 +89,11 @@ app.configure(function () {
     app.post('/login', passport.authenticate('local'), usersController.login);
     app.get('/users/consult/:username', usersController.consult);
 
+    var billetsController = require('./controllers/billets');
+    app.get('/billets',billetsController.billets);
+    app.get('/billets/list',billetsController.list);
+    app.post('/billets/create',billetsController.create);
+    app.post('/billets/update',billetsController.update);
+
 });
 http.createServer(app).listen(3000);
