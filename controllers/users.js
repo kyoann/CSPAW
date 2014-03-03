@@ -81,6 +81,8 @@ function renderConsultProfil(user,res) {
 	});
 }
 function renderModeratorPage(req,res) {
+	//todo
+	renderConsultProfil(req.user,res);
 
 }
 function addEventsToStory(stories,events) {

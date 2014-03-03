@@ -1,7 +1,10 @@
 var billetsModel = require('../models/billets');
+var usersController = require('./users');
 
 exports.billets = function(req,res) {
-	res.render('billets',null,function(err,stuff){
+	var view ={ };
+	usersController.addConnexionView(req,view);
+	res.render('billets',view,function(err,stuff){
 		console.log(err);
 		if(!err) {
 			res.write(stuff);

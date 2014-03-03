@@ -19,7 +19,26 @@
 		<a href='/stories/new'>Raconter une histoire</a>
 		<%if(utilities.isModerator(connexion.user)) {%>
 		<a href='/stories/moderate'>Mod&eacute;rer les histoires</a>
+		<a href='/billets'>Gérer les billets</a>
 		<%}%>
+	</div>
+</div>
+<div class='structureElement'>
+	<div class='structureName'>
+		Billets
+	</div>
+	<div>
+		<%
+		for(var i = 0 ; i < billets.length ; i++) {
+		%>
+		<div class='storyTitle'>
+			<%= billets[i].title%>
+		<div class='storyDate' style='display:inline;'>, le  <%= utilities.formatDate(billets[i].creationDate)%></div>
+		</div>
+		<div><%- billets[i].text%></div>
+		<%
+		}
+		%>
 	</div>
 </div>
 <div class='structureElement'>
