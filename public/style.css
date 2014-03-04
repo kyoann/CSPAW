@@ -4,19 +4,19 @@ body
 }
 div {
 }
+textarea {
+	width: 70%;
+}
 .storyTitle {
 	text-align:center;
 }
 .storyFacts {
-	width: 300px;
 }
 
 .storyFeelings {
-	width: 300px;
 }
 
 .storyProblem {
-	width: 300px;
 }
 
 .structureElement {
