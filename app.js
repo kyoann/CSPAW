@@ -10,7 +10,6 @@ var express = require('express'),
 
 
 passport.serializeUser(function (user, done) {
-    console.log("serialize:" + user);
     done(null, user.username);
 });
 
@@ -88,6 +87,7 @@ app.configure(function () {
     app.post('/logout', usersController.logout);
     app.post('/login', passport.authenticate('local'), usersController.login);
     app.get('/users/consult/:username', usersController.consult);
+    app.get('/users/:username',usersController.json.getUser)
 
     var billetsController = require('./controllers/billets');
     app.get('/billets',billetsController.billets);

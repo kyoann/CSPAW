@@ -2,6 +2,10 @@ exports.formatDate = function(aDate) {
 	var result = aDate.getHours() + ':' + aDate.getMinutes() + ' le ' + aDate.getDate() + '/' + (aDate.getMonth() + 1) + '/' + aDate.getFullYear();
 	return result;
 };
+exports.isAuthenticated = function(user) {
+	if(user == undefined) return false;
+	return true;
+}
 exports.isModerator = function(user) {
 	if(user == undefined) return false;
 	for(var i = 0;i<user.profil.length;i++) {

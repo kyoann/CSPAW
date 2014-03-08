@@ -4,30 +4,92 @@
 <meta charset="UTF-8">
 <title>Consulter le profil de <%= id %></title>
 <link rel='stylesheet' type='text/css' href='/style.css' />
+<script src="/angular.min.js"></script>
+<script type='text/javascript'>
+var profilApp = angular.module('Profil',[]);
+profilApp.controller('profilCtrl',function($scope,$http){
+		$scope.modify = false;
+		$scope.ages = [
+		'18 - 25',
+		'25 - 30',
+		'30 - 35',
+		'35 - 40',
+		'40 - 45',
+		'45 - 50',
+		'50 - 55',
+		'55 - 60',
+		'60 - ...',
+		];
+
+		$scope.genders = [
+		'M','F'
+		];
+
+		$scope.studies = [
+			'Sans diplôme','Bac','Bac+2','Bac+3','Bac+4','Bac+5 et plus'
+			];
+
+		$scope.hierarchyLevels = [
+			'Cadre','Non Cadre'
+			];
+
+		$scope.activities = [
+			'Droit','Banque','Bâtiment'
+			];
+
+		$http.get('/users/'+'<%=connexion.user.username%>').success(function(user){
+				$scope.username = user.username;
+				$scope.age = user.age;
+				$scope.gender = user.gender;
+				$scope.studies = user.studies;
+				$scope.hierarchyLevel = user.hierarchyLevel;
+				$scope.activity = user.activity;
+				});
+
+		});
+
+</script>
 </head>
 <body>
 <% include connexion%>
-<div class='structureElement'>
-	<div class='structureName'>
-		Mes informations
+<div ng-app='Profil' ng-controller='profilCtrl'>
+	<div ng-hide='modifiable' class='structureElement'>
+		<div class='structureName'>
+			Mes informations
+		</div>
+		<div class='inputField'>
+			Identifiant : {{username}} 
+		</div>
+		<div class='inputField'>
+			Age : {{age}}
+		</div>
+		<div class='inputField'>
+			Genre : {{gender}}
+		</div>
+		<div class='inputField'>
+			Niveau d'étude : {{studies}}
+		</div>
+		<div class='inputField'>
+			Statut : {{hierarchyLevel }} 
+		</div>
+		<div class='inputField'>
+			Secteur : {{activity}} 
+		</div>
+		<button ng-click='modifiable=!modifiable'>Modifier</button>
 	</div>
-	<div class='info'>
-		<%= username %>
-	</div>
-	<div class='info'>
-		<%= age %>
-	</div>
-	<div class='info'>
-		<%= gender %>
-	</div>
-	<div class='info'>
-		<%= studies %>
-	</div>
-	<div class='info'>
-		<%= hierarchyLevel %>
-	</div>
-	<div class='info'>
-		<%= activity %>
+	<div ng-hide='!modifiable' class='structureElement'>
+		<div class='structureName'>
+			Mes informations
+		</div>
+		<div class='inputField'>Mot de passe : <input type='password'/></div>
+		<div class='inputField'>Mail : <input type='mail'/></div>
+		<div class='inputField'>Age : <select ng-model='age' ng-options='age for age in ages'></select></div>
+		<div class='inputField'>Genre : <select ng-model='gender' ng-options='gender for gender in genders'></select></div>
+		<div class='inputField'>Niveau d'&eacute;tude : <select ng-model='studies' ng-options='study for study in studies'></select></div>
+		<div class='inputField'>Statut : <select  ng-model='hierarchyLevel' ng-options='hierarchyLevel for hierarchyLevel in hierarchyLevels'></select></div>
+		<div class='inputField'>Secteur : <select ng-model='activity' ng-options='activity for activity in activities'></select></div>
+		<button ng-click=''>Annuler</button>
+		<button ng-click=''>Valider</button>
 	</div>
 </div>
 <div class='structureElement'>

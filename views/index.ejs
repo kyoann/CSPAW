@@ -16,7 +16,9 @@
 	<div id='intro'>Ce site a pour objectif de vous permettre de partager des probl&egrave;mes humains dans le cadre d'une activit&eacute; professionnelle et de b&eacute;n&eacute;ficier d'un soutien moral et de clefs de compr&eacute;hension.</div>
 	<div id='actions'>
 		<a href='/stories/search'>Rechercher une histoire</a>
+		<%if(utilities.isAuthenticated(connexion.user)) {%>
 		<a href='/stories/new'>Raconter une histoire</a>
+		<%}%>
 		<%if(utilities.isModerator(connexion.user)) {%>
 		<a href='/stories/moderate'>Mod&eacute;rer les histoires</a>
 		<a href='/billets'>Gérer les billets</a>
@@ -33,7 +35,7 @@
 		%>
 		<div class='storyTitle'>
 			<%= billets[i].title%>
-		<div class='storyDate' style='display:inline;'>, le  <%= utilities.formatDate(billets[i].creationDate)%></div>
+		<div class='storyDate' style='display:inline;'>, <%= utilities.formatDate(billets[i].creationDate)%></div>
 		</div>
 		<div><%- billets[i].text%></div>
 		<%

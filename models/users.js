@@ -1,12 +1,12 @@
 var model = require('./dataModel');
 
 var users = [
- new model.user(1, 'Thi', 'Ly', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['moderator']),
- new model.user(5, 'u', 'u', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
- new model.user(6, 'm', 'm', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['moderator'], "Long John", "Silver", null),
- new model.user(7, 's', 's', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist'], "Jean", "Malaury", "Anthopo-géographe"),
- new model.user(8, 'uu', 'uu', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['user']),
- new model.user(10, 'ss', 'ss', '35', 'Cadre', 'Avocat', 'F', 'Bac +5', {}, ['specialist'], "Edgar ALlan", "Poe", "écrivain"),
+ new model.user(1, 'Thi', 'Ly', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['moderator']),
+ new model.user(5, 'u', 'u', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['user']),
+ new model.user(6, 'm', 'm', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['moderator'], "Long John", "Silver", null),
+ new model.user(7, 's', 's', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['specialist'], "Jean", "Malaury", "Anthopo-géographe"),
+ new model.user(8, 'uu', 'uu', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['user']),
+ new model.user(10, 'ss', 'ss', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['specialist'], "Edgar ALlan", "Poe", "écrivain"),
 
 ];
 exports.createUser = function (username, password, age, hierarchyLevel, activity, gender, studies) {
