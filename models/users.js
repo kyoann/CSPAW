@@ -1,17 +1,17 @@
 var model = require('./dataModel');
 
 var users = [
- new model.user(1, 'Thi', 'Ly', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['moderator']),
- new model.user(5, 'u', 'u', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['user']),
- new model.user(6, 'm', 'm', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['moderator'], "Long John", "Silver", null),
- new model.user(7, 's', 's', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['specialist'], "Jean", "Malaury", "Anthopo-géographe"),
- new model.user(8, 'uu', 'uu', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['user']),
- new model.user(10, 'ss', 'ss', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5', {}, ['specialist'], "Edgar ALlan", "Poe", "écrivain"),
+ new model.user(1, 'Thi', 'Ly', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+5 et plus', {}, ['moderator']),
+ new model.user(5, 'u', 'u', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+4', {}, ['user']),
+ new model.user(6, 'm', 'm', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+4', {}, ['moderator'], "Long John", "Silver", null),
+ new model.user(7, 's', 's', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+4', {}, ['specialist'], "Jean", "Malaury", "Anthopo-géographe"),
+ new model.user(8, 'uu', 'uu', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+4', {}, ['user']),
+ new model.user(10, 'ss', 'ss', '30 - 35', 'Cadre', 'Droit', 'F', 'Bac+4', {}, ['specialist'], "Edgar ALlan", "Poe", "écrivain"),
 
 ];
 exports.createUser = function (username, password, age, hierarchyLevel, activity, gender, studies) {
     var idx = users.length;
-    var user = new model.user(idx, username, password, age, hierarchyLevel, activity, gender, studies, ['user'], null, null, null);
+    var user = new model.user(idx, username, password, age, hierarchyLevel, activity, gender, studies, [], ['user'], null, null, null);
     users[idx] = user;
     return user;
 };
@@ -31,7 +31,7 @@ exports.findByUsername = function (username, fn) {
             return fn(null, user);
         }
     }
-    return fn(null, null);
+    return fn('not found', null);
 }
 
 var storyCommentedEvents = [];

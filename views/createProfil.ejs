@@ -35,7 +35,16 @@ CreateProfilModule.controller('CreateProfilCtrl',function($scope) {
 		$scope.activities = [
 			'Droit','Banque','Bâtiment'
 			];
-
+		<%if(err) {%>
+			$scope.err = '<%=err%>';
+			$scope.username = '<%=username%>';
+			$scope.password = '<%=password%>';
+			$scope.age = '<%=age%>';
+			$scope.gender = '<%=gender%>';
+			$scope.activity = '<%=activity%>';
+			$scope.study = '<%=studies%>';
+			$scope.hierarchyLevel = '<%=hierarchyLevel%>';
+			<%}%>
 });
 </script>
 </head>
@@ -46,10 +55,11 @@ CreateProfilModule.controller('CreateProfilCtrl',function($scope) {
 			Mon profil
 		</div>
 		<div>
+			{{err}}
 			<form method='POST' action='/users/create' enctype='application/x-www-form-urlencoded'>
-				<div class='inputField'>Identifiant : <input id='userId' name='userId' type='text'/></div>
-				<div class='inputField'>Mot de passe : <input id='password' name='password' type='password'/></div>
-				<div class='inputField'>Mail : <input id='mail' name='mail' type='mail'/></div>
+				<div class='inputField'>Identifiant : <input ng-model='username' id='userId' name='userId' type='text'/></div>
+				<div class='inputField'>Mot de passe : <input ng-model='password' id='password' name='password' type='password'/></div>
+				<div class='inputField'>Mail : <input ng-model='mail' id='mail' name='mail' type='mail'/></div>
 				<div class='inputField'>Age : <select ng-model='age' ng-options='age for age in ages' id='age' name='age'></select></div>
 				<div class='inputField'>Genre : <select ng-model='gender' ng-options='gender for gender in genders' id='gender' name='gender'></select></div>
 				<div class='inputField'>Niveau d'&eacute;tude : <select ng-model='study' ng-options='study for study in studies' id='studies' name='studies'></select></div>

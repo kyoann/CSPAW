@@ -2,10 +2,26 @@ var model = require('../models/users');
 var storiesModel = require('../models/stories');
 var utilities = require('./utilities');
 
+exports.rest = {};
+
 exports.new = function(req,res) {
-	var view = exports.addConnexionView(req,{});
+	var view = {};
+	view.err = null;
 
 	res.render('createProfil', view, function(err,stuff) {
+		if(err) {
+			console.log(err);
+		}
+		if(!err) {
+			res.write(stuff);
+			res.end();
+		}
+	});
+}
+exports.new2 = function(req,res) {
+	var view = exports.addConnexionView(req,{});
+
+	res.render('createProfil2', view, function(err,stuff) {
 		if(!err) {
 			res.write(stuff);
 			res.end();
@@ -13,19 +29,37 @@ exports.new = function(req,res) {
 	});
 }
 
+exports.rest.create = function(req,res) {
+	debugger;
+	var user = req.body;
+
+	model.findByUsername(user.username,function(err,aUser){
+
+		if(err === 'not found') {
+			var modeledUser = model.createUser(user.username,user.password,user.age,user.hierarchyLevel,user.activity,user.gender,user.studies);
+			req.login(modeledUser,function(err) {});
+
+			res.json({err:null});
+		}
+		else {
+			//TODO
+			res.json({err:"already exists"});
+		}
+	});	
+};
 exports.create = function(req,res) {
+	model.findByUsername(req.body.userId,function(err,existingUser){
+		if(err === 'not found') {
+			var user = model.createUser(req.body.userId,req.body.password,req.body.age,req.body.hierarchyLevel,req.body.activity,req.body.gender,req.body.studies);
 
-	var user = model.createUser(req.body.userId,req.body.password,req.body.age,req.body.hierarchyLevel,req.body.activity,req.body.gender,req.body.studies);
+			user.stories = [];
+			user.commentsCommented = [];
+			user.connexion = {};	
+			user.connexion.user= user;
 
-	user.stories = [];
-	user.commentsCommented = [];
+			req.login(user,function(err) {});
 
-	user.connexion = {};	
-	user.connexion.user= user;
-
-	req.login(user,function(err) {});
-	res.render('consultProfil',
-			user, function(err,stuff) {
+			res.render('consultProfil', user, function(err,stuff) {
 				if(err) {
 					console.log(err);
 				}
@@ -34,6 +68,28 @@ exports.create = function(req,res) {
 					res.end();
 				}
 			});
+		}
+		else {
+			var data = { err:"Identifiant utilisateur déjà utilisé." };
+			data.username = req.body.userId;
+			data.password = req.body.password;
+			data.age = req.body.age;
+			data.hierarchyLevel = req.body.hierarchyLevel;
+			data.activity = req.body.activity;
+			data.gender = req.body.gender;
+			data.studies = req.body.studies;
+
+			res.render('createProfil', data, function(err,stuff) {
+				if(err) {
+					console.log(err);
+				}
+				if(!err) {
+					res.write(stuff);
+					res.end();
+				}
+			});
+		}
+	});	
 };
 
 exports.update = function(req,res) {
@@ -50,6 +106,7 @@ exports.logout = function(req,res) {
 	res.redirect('/');
 };
 exports.consult = function(req,res) {
+			debugger;
 	if(utilities.isModerator(req.user)) {
 		renderModeratorPage(req,res);
 	}
@@ -61,7 +118,6 @@ function renderConsultProfil(user,res) {
 	user.connexion = {};	
 	user.connexion.user = user;
 	user.utilities = utilities;
-
 
 	storiesModel.getUserStories(user.id, function(err,userStories) {
 		if(!err) {
@@ -123,10 +179,8 @@ exports.addUserEventCommentCommented = function(storyTitle,storyId,commentedComm
 exports.deleteCommentCommentedEvents = function(storyId,username) {
 	model.deleteCommentCommentedEvents(storyId,username);
 }
-exports.json = {};
 
-exports.json.getUser = function(req,res) {
-	debugger;
+exports.rest.getUser = function(req,res) {
 	res.json({
 		username: req.user.username,
 		age: req.user.age,

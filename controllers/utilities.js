@@ -4,10 +4,12 @@ exports.formatDate = function(aDate) {
 };
 exports.isAuthenticated = function(user) {
 	if(user == undefined) return false;
+	if(user == null) return false;
 	return true;
 }
 exports.isModerator = function(user) {
 	if(user == undefined) return false;
+	if(user == null) return false;
 	for(var i = 0;i<user.profil.length;i++) {
 		if(user.profil[i]==='moderator') {
 		return true;
@@ -17,6 +19,7 @@ exports.isModerator = function(user) {
 }
 exports.isUser = function(user) {
 	if(user == undefined) return true;
+	if(user == null) return true;
 	for(var i = 0;i<user.profil.length;i++) {
 		if(user.profil[i]==='user') {
 		return true;
@@ -26,6 +29,7 @@ exports.isUser = function(user) {
 }
 exports.isSpecialist = function(user) {
 	if(user == undefined) return false;
+	if(user == null) return false;
 	for(var i = 0;i<user.profil.length;i++) {
 		if(user.profil[i]==='specialist') {
 		return true;

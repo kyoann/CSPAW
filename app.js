@@ -82,12 +82,14 @@ app.configure(function () {
 
     var usersController = require('./controllers/users');
     app.get('/users/new', usersController.new);
+    app.get('/users/new2', usersController.new2);
     app.post('/users/create', usersController.create);
     app.put('/users/update', usersController.update);
     app.post('/logout', usersController.logout);
     app.post('/login', passport.authenticate('local'), usersController.login);
     app.get('/users/consult/:username', usersController.consult);
-    app.get('/users/:username',usersController.json.getUser)
+    app.get('/users/:username',usersController.rest.getUser)
+    app.post('/users/rest/create',usersController.rest.create);
 
     var billetsController = require('./controllers/billets');
     app.get('/billets',billetsController.billets);
